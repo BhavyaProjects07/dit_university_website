@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware'
     
-]
+] 
 
 ROOT_URLCONF = 'dit_university_website.urls'
 
