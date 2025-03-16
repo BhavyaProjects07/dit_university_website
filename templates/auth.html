@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIT University - Authentication</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #e6edf3;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center min-h-screen bg-gray-900 text-white">
+    <div class="absolute top-5 left-5 flex items-center space-x-2">
+        <i class="fas fa-graduation-cap text-blue-500 text-3xl"></i>
+        <h1 class="text-xl font-bold">DIT UNIVERSITY</h1>
+    </div>
+    <div class="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg border border-gray-700">
+        
+        <!-- Messages -->
+        {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <p class="text-center {% if message.tags == 'error' %}text-red-500{% else %}text-green-500{% endif %}">
+                        {{ message }}
+                    </p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Sign Up Form -->
+        <div id="signupForm">
+            <h2 class="text-2xl font-bold text-center mb-6">Sign up with email</h2>
+            <form method="POST" action="{% url 'auth' %}" id="signupFormElement">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="signup">
+                
+                <div class="flex items-center border border-gray-600 rounded px-3 py-2 mb-4">
+                    <i class="fas fa-user text-gray-400"></i>
+                    <input type="text" name="username" placeholder="Username" class="w-full bg-transparent text-white p-2 focus:outline-none" required>
+                </div>
+        
+                <div class="flex items-center border border-gray-600 rounded px-3 py-2 mb-4">
+                    <i class="fas fa-envelope text-gray-400"></i>
+                    <input type="email" name="email" id="signupEmail" placeholder="Email" class="w-full bg-transparent text-white p-2 focus:outline-none" required>
+                </div>
+        
+                <div class="flex items-center border border-gray-600 rounded px-3 py-2 mb-4">
+                    <i class="fas fa-lock text-gray-400"></i>
+                    <input type="password" name="password" placeholder="Password" class="w-full bg-transparent text-white p-2 focus:outline-none" required>
+                </div>
+        
+                <div class="flex items-center border border-gray-600 rounded px-3 py-2 mb-4">
+                    <i class="fas fa-lock text-gray-400"></i>
+                    <input type="password" name="confirm_password" placeholder="Confirm Password" class="w-full bg-transparent text-white p-2 focus:outline-none" required>
+                </div>
+        
+                <!-- OTP Button -->
+                <button type="button" onclick="sendOtp()" class="w-full bg-teal-500 hover:bg-teal-600 text-white p-3 rounded font-semibold">
+                    Sign up
+                </button>
+                
+            </form>
+        
+            <div class="text-center mt-4 text-gray-400">
+                <p>Already have an account?</p>
+                <a href="#" class="text-teal-400 hover:underline" onclick="toggleForms()">Log in</a>
+            </div>
+        </div>
+        
+        <!-- Login Form -->
+        <div id="loginForm" class="hidden">
+            <h2 class="text-2xl font-bold text-center mb-6">Log in</h2>
+            <form method="POST" action="{% url 'auth' %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="signin">
+                
+                <div class="flex items-center border border-gray-600 rounded px-3 py-2 mb-4">
+                    <i class="fas fa-envelope text-gray-400"></i>
+                    <input type="email" name="email" placeholder="Email" class="w-full bg-transparent text-white p-2 focus:outline-none" required>
+                </div>
+                <div class="flex items-center border border-gray-600 rounded px-3 py-2 mb-4">
+                    <i class="fas fa-lock text-gray-400"></i>
+                    <input type="password" name="password" placeholder="Password" class="w-full bg-transparent text-white p-2 focus:outline-none" required>
+                </div>
+                <button type="submit" class="w-full bg-teal-500 hover:bg-teal-600 text-white p-3 rounded font-semibold">Log in</button>
+            </form>
+
+            <div class="text-center mt-4 text-gray-400">
+                <p>Didn't have an account ?</p>
+                <a href="#" class="text-teal-400 hover:underline" onclick="toggleForms()">SIgn up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- OTP Popup -->
+    <div id="otpPopup" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 hidden">
+        <div class="bg-gray-800 p-6 rounded-lg text-center shadow-lg">
+            <h2 class="text-xl font-bold mb-3">OTP Sent!</h2>
+            <p class="mb-4">An OTP has been sent to <span id="otpEmailDisplay" class="font-semibold"></span></p>
+            <form method="POST" action="{% url 'auth' %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="verify_otp">
+                <input type="hidden" name="otp_email" id="otpEmail">
+                <input type="text" name="otp" placeholder="Enter OTP" class="w-full bg-gray-700 text-white p-2 rounded mb-4 text-center" required>
+                <button type="submit" class="w-full bg-teal-500 hover:bg-teal-600 text-white p-3 rounded font-semibold">
+                    Verify OTP
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleForms() {
+            document.getElementById("signupForm").classList.toggle("hidden");
+            document.getElementById("loginForm").classList.toggle("hidden");
+        }
+        
+        function sendOtp() {
+            var username = document.querySelector("[name='username']").value;
+            var email = document.getElementById("signupEmail").value;
+            var password = document.querySelector("[name='password']").value;
+            var confirmPassword = document.querySelector("[name='confirm_password']").value;
+
+            if (!username || !email || !password || !confirmPassword) {
+                alert("Please fill all fields before signing up.");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            fetch("{% url 'auth' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: new URLSearchParams({
+                    action: "signup",
+                    username: username,
+                    email: email,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show OTP popup
+                    document.getElementById("signupForm").classList.add("hidden");
+                    document.getElementById("otpPopup").classList.remove("hidden");
+                    document.getElementById("otpEmailDisplay").innerText = email;
+                    document.getElementById("otpEmail").value = email;
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+
+    </script>
+</body>
+</html>

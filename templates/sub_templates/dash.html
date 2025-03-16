@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | DIT University</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            950: '#082f49',
+                        },
+                        secondary: {
+                            DEFAULT: '#d4af37',
+                            dark: '#b8971f',
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #e5e7eb;
+            overflow: hidden;
+        }
+        
+        .progress-value {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1.5s ease;
+        }
+        
+        .chat-container::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        .chat-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb {
+            background: #0ea5e9;
+            border-radius: 10px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb:hover {
+            background: #0284c7;
+        }
+        
+        .chat-bubble-user {
+            background-color: #0ea5e9;
+            color: white;
+            border-radius: 18px 18px 0 18px;
+            padding: 10px 15px;
+            max-width: 80%;
+            margin-left: auto;
+            animation: slideInRight 0.3s ease;
+        }
+        
+        .chat-bubble-bot {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            border-radius: 18px 18px 18px 0;
+            padding: 10px 15px;
+            max-width: 80%;
+            animation: slideInLeft 0.3s ease;
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideInLeft {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: #ef4444;
+            color: white;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-link {
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-link:hover, .sidebar-link.active {
+            background-color: rgba(14, 165, 233, 0.1);
+            color: #0ea5e9;
+            border-left-color: #0ea5e9;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .wave-animation {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .wave-animation::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' opacity='.25' fill='%230ea5e9'%3E%3C/path%3E%3Cpath d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' opacity='.5' fill='%230ea5e9'%3E%3C/path%3E%3Cpath d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' fill='%230ea5e9'%3E%3C/path%3E%3C/svg%3E") no-repeat;
+            background-size: cover;
+            animation: wave 10s linear infinite;
+        }
+        
+        @keyframes wave {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 1000px; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- Mobile Sidebar -->
+    <div id="mobileSidebar" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="bg-white h-full w-64 shadow-lg transform transition-transform duration-300 -translate-x-full" id="sidebarPanel">
+            <div class="p-4 border-b flex justify-between items-center">
+                <div class="flex items-center">
+                    <img src="https://via.placeholder.com/40" alt="DIT Logo" class="h-10 w-10 mr-3">
+                    <div>
+                        <h1 class="text-lg font-bold text-primary-600">DIT University</h1>
+                        <p class="text-xs text-gray-500">Student Portal</p>
+                    </div>
+                </div>
+                <button id="closeSidebar" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-4">
+                <div class="flex items-center space-x-3 mb-6">
+                    <img src="{{ profile.profile_picture.url|default:'https://via.placeholder.com/50' }}" 
+                         alt="Profile" 
+                         class="h-12 w-12 rounded-full object-cover border-2 border-primary-500">
+                    <div>
+                        <p class="font-semibold">{{ user.username }}</p>
+                        <p class="text-xs text-gray-500">{{ profile.classroom.classroom|default:"Unassigned" }}</p>
+                    </div>
+                </div>
+                
+                <nav class="space-y-1">
+                    <a href="#" class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg">
+                        <i class="fas fa-home w-5 mr-3"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg">
+                        <i class="fas fa-book w-5 mr-3"></i>
+                        <span>Courses</span>
+                    </a>
+                    <a href="#" class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg">
+                        <i class="fas fa-chart-line w-5 mr-3"></i>
+                        <span>Performance</span>
+                    </a>
+                    <a href="#" class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg">
+                        <i class="fas fa-calendar-alt w-5 mr-3"></i>
+                        <span>Attendance</span>
+                    </a>
+                    <a href="#" class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg">
+                        <i class="fas fa-bell w-5 mr-3"></i>
+                        <span>Notifications</span>
+                    </a>
+                    <a href="#" class="sidebar-link flex items-center px-4 py-3 text-gray-700 rounded-lg">
+                        <i class="fas fa-cog w-5 mr-3"></i>
+                        <span>Settings</span>
+                    </a>
+                </nav>
+            </div>
+            
+            <div class="absolute bottom-0 left-0 w-full p-4 border-t">
+                <a href="/logout/" class="flex items-center text-red-500 hover:text-red-700">
+                    <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md sticky top-0 z-40">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <button id="sidebarToggle" class="mr-4 text-gray-500 hover:text-primary-600 md:hidden">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <div class="flex items-center">
+                        <img src="https://via.placeholder.com/40" alt="DIT Logo" class="h-10 w-10 mr-3">
+                        <div class="hidden md:block">
+                            <h1 class="text-xl font-bold gradient-text">DIT University</h1>
+                            <p class="text-xs text-gray-500">Student Portal</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button class="text-gray-500 hover:text-primary-600 focus:outline-none">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="notification-badge">3</span>
+                        </button>
+                    </div>
+                    
+                    <div class="relative">
+                        <button class="text-gray-500 hover:text-primary-600 focus:outline-none">
+                            <i class="fas fa-envelope text-xl"></i>
+                            <span class="notification-badge">2</span>
+                        </button>
+                    </div>
+                    
+                    <div class="relative group">
+                        <button class="flex items-center focus:outline-none">
+                            <img src="{{ profile.profile_picture.url|default:'https://via.placeholder.com/40' }}" 
+                                 alt="Profile" 
+                                 class="h-10 w-10 rounded-full object-cover border-2 border-primary-500">
+                            <span class="ml-2 font-medium text-gray-700 hidden md:block">{{ user.username }}</span>
+                            <i class="fas fa-chevron-down text-xs text-gray-500 ml-1 hidden md:block"></i>
+                        </button>
+                        
+                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block animate-fade-in">
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600">
+                                <i class="fas fa-user mr-2"></i> My Profile
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-primary-50 hover:text-primary-600">
+                                <i class="fas fa-cog mr-2"></i> Settings
+                            </a>
+                            <div class="border-t my-1"></div>
+                            <a href="/logout/" class="block px-4 py-2 text-red-500 hover:bg-red-50">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto py-8 px-4 flex-1">
+        <!-- Welcome Banner -->
+        <div class="bg-gradient-to-r from-primary-600 to-primary-800 rounded-xl p-6 mb-8 text-white shadow-lg wave-animation" data-aos="fade-up">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h1 class="text-3xl font-bold mb-2">Welcome back, {{ user.username }}!</h1>
+                    <p class="opacity-90">Here's what's happening with your academic journey today.</p>
+                </div>
+                <div class="flex space-x-2">
+                    <a href="#" class="bg-white text-primary-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition shadow-md">
+                        <i class="fas fa-calendar-alt mr-2"></i> View Schedule
+                    </a>
+                    <a href="#" class="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg hover:bg-white/30 transition">
+                        <i class="fas fa-bell mr-2"></i> Notifications
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-md p-6 card-hover" data-aos="fade-up" data-aos-delay="100">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-500 text-sm font-medium">Overall Attendance</h3>
+                    <div class="bg-green-100 text-green-600 p-2 rounded-full">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                </div>
+                <div class="flex items-end">
+                    <p class="text-3xl font-bold text-gray-800">{{ overall_attendance }}%</p>
+                    <p class="text-sm text-green-500 ml-2 mb-1 flex items-center">
+                        <i class="fas fa-arrow-up mr-1"></i>
+                        <span>2%</span>
+                    </p>
+                </div>
+                <div class="mt-2 progress-bar">
+                    <div class="progress-value bg-green-500" style="width: {{ overall_attendance }}%"></div>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Minimum required: 75%</p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 card-hover" data-aos="fade-up" data-aos-delay="200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-500 text-sm font-medium">Current GPA</h3>
+                    <div class="bg-blue-100 text-blue-600 p-2 rounded-full">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="flex items-end">
+                    <p class="text-3xl font-bold text-gray-800" id="gpa-display">Calculating...</p>
+                    <p class="text-sm text-green-500 ml-2 mb-1 flex items-center">
+                        <i class="fas fa-arrow-up mr-1"></i>
+                        <span>0.2</span>
+                    </p>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Last updated: Today</p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 card-hover" data-aos="fade-up" data-aos-delay="300">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-500 text-sm font-medium">Assignments</h3>
+                    <div class="bg-yellow-100 text-yellow-600 p-2 rounded-full">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                </div>
+                <div class="flex items-end">
+                    <p class="text-3xl font-bold text-gray-800">5</p>
+                    <p class="text-sm text-gray-500 ml-2 mb-1">pending</p>
+                </div>
+                <div class="mt-2 flex justify-between text-xs">
+                    <span class="text-green-500">12 Completed</span>
+                    <span class="text-red-500">2 Overdue</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Next due: Tomorrow</p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-md p-6 card-hover" data-aos="fade-up" data-aos-delay="400">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-500 text-sm font-medium">Upcoming Exams</h3>
+                    <div class="bg-red-100 text-red-600 p-2 rounded-full">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+                <div class="flex items-end">
+                    <p class="text-3xl font-bold text-gray-800">3</p>
+                    <p class="text-sm text-gray-500 ml-2 mb-1">this month</p>
+                </div>
+                <div class="mt-2 text-xs text-gray-600">
+                    <p>Next: Data Structures (Mar 21)</p>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Mid-semester exams starting soon</p>
+            </div>
+        </div>
+        
+        <!-- Main Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Profile Section -->
+            <div class="bg-white rounded-xl shadow-md p-6 lg:row-span-2" data-aos="fade-up">
+                <h2 class="text-xl font-bold text-primary-600 mb-6 flex items-center">
+                    <i class="fas fa-user-circle mr-2"></i> Profile
+                </h2>
+            
+                <!-- Profile Picture -->
+                <div class="flex flex-col items-center mb-6">
+                    <div class="relative mb-3">
+                        <img src="{{ profile.profile_picture.url|default:'https://via.placeholder.com/150' }}" 
+                             alt="Profile Picture" 
+                             class="w-24 h-24 rounded-full object-cover border-4 border-primary-500 shadow-md">
+                        <div class="absolute bottom-0 right-0 bg-primary-500 text-white rounded-full p-2 shadow-md">
+                            <i class="fas fa-camera text-xs"></i>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold">{{ user.username }}</h3>
+                    <p class="text-gray-500 italic text-sm">{{ profile.bio|default:"Computer Science Student" }}</p>
+                    
+                    <div class="mt-3 flex space-x-2">
+                        <span class="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs">
+                            <i class="fas fa-graduation-cap mr-1"></i> {{ profile.classroom.classroom|default:"B.Tech CSE" }}
+                        </span>
+                        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs">
+                            <i class="fas fa-user-graduate mr-1"></i> 4th Year
+                        </span>
+                    </div>
+                </div>
+            
+                <!-- Personal Information -->
+                <div class="space-y-3 mb-6">
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <i class="fas fa-envelope text-primary-500 w-6"></i>
+                        <span class="ml-2">{{ user.email }}</span>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <i class="fas fa-phone text-primary-500 w-6"></i>
+                        <span class="ml-2">{{ profile.contact_number|default:"+91 98765 43210" }}</span>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <i class="fas fa-id-card text-primary-500 w-6"></i>
+                        <span class="ml-2">ID: DIT{{ user.id|stringformat:"06d" }}</span>
+                    </div>
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <i class="fas fa-calendar-alt text-primary-500 w-6"></i>
+                        <span class="ml-2">Joined: {{ user.date_joined|date:"F d, Y" }}</span>
+                    </div>
+                </div>
+            
+                <!-- Edit Profile Button -->
+                <div class="mt-4">
+                    <a href="#" 
+                       class="block w-full bg-primary-600 text-white px-4 py-3 rounded-lg hover:bg-primary-700 transition text-center shadow-md">
+                        <i class="fas fa-edit mr-2"></i> Edit Profile
+                    </a>
+                </div>
+            </div>
+
+            <!-- Courses Section -->
+            <div class="bg-white rounded-xl shadow-md p-6 lg:col-span-2" data-aos="fade-up" data-aos-delay="100">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-primary-600 flex items-center">
+                        <i class="fas fa-book mr-2"></i> My Courses
+                    </h2>
+                    <a href="#" class="text-primary-600 hover:text-primary-700 text-sm font-medium">
+                        View All <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% for course in subjects %}
+                        <div class="bg-gray-50 rounded-lg p-4 border-l-4 border-primary-500 hover:shadow-md transition">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-semibold">{{ course.name }}</h3>
+                                    <p class="text-xs text-gray-500">Prof. {% if forloop.counter == 1 %}John Doe{% elif forloop.counter == 2 %}Jane Smith{% else %}Robert Johnson{% endif %}</p>
+                                </div>
+                                <span class="px-2 py-1 text-xs font-medium rounded-full {% if course.attendance >= 75 %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+                                    {{ course.attendance }}%
+                                </span>
+                            </div>
+                            <div class="mt-3">
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>Progress</span>
+                                    <span>{{ forloop.counter|add:"60" }}%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-value bg-primary-500" style="width: {{ forloop.counter|add:"60" }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="col-span-2 bg-gray-50 rounded-lg p-6 text-center">
+                            <i class="fas fa-book-open text-4xl text-gray-300 mb-2"></i>
+                            <p>No courses enrolled yet.</p>
+                            <a href="#" class="text-primary-600 hover:text-primary-700 mt-2 inline-block">
+                                Browse Available Courses
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Marks Section -->
+            <div class="bg-white rounded-xl shadow-md p-6 lg:col-span-2" data-aos="fade-up" data-aos-delay="200">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-primary-600 flex items-center">
+                        <i class="fas fa-chart-bar mr-2"></i> Your Marks
+                    </h2>
+                    <div class="flex space-x-2">
+                        <select class="text-sm border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                            <option>Current Semester</option>
+                            <option>Previous Semester</option>
+                            <option>All Semesters</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full table-auto border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 text-left">
+                                <th class="px-4 py-3 text-sm font-medium text-gray-600 rounded-tl-lg">Subject</th>
+                                <th class="px-4 py-3 text-sm font-medium text-gray-600">Marks</th>
+                                <th class="px-4 py-3 text-sm font-medium text-gray-600">Grade</th>
+                                <th class="px-4 py-3 text-sm font-medium text-gray-600 rounded-tr-lg">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            {% for subject in subjects %}
+                            <tr class="hover:bg-gray-50 transition">
+                                <td class="px-4 py-3">
+                                    <div>
+                                        <p class="font-medium">{{ subject.name }}</p>
+                                        <p class="text-xs text-gray-500">Code: {% if forloop.counter == 1 %}CS101{% elif forloop.counter == 2 %}CS102{% else %}CS{{ forloop.counter }}01{% endif %}</p>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 font-medium">{{ subject.marks }}</td>
+                                <td class="px-4 py-3">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full 
+                                        {% if subject.marks >= 90 %}bg-green-100 text-green-800
+                                        {% elif subject.marks >= 80 %}bg-blue-100 text-blue-800
+                                        {% elif subject.marks >= 70 %}bg-yellow-100 text-yellow-800
+                                        {% else %}bg-red-100 text-red-800{% endif %}">
+                                        {% if subject.marks >= 90 %}A+
+                                        {% elif subject.marks >= 85 %}A
+                                        {% elif subject.marks >= 80 %}A-
+                                        {% elif subject.marks >= 75 %}B+
+                                        {% elif subject.marks >= 70 %}B
+                                        {% elif subject.marks >= 65 %}B-
+                                        {% elif subject.marks >= 60 %}C+
+                                        {% else %}C{% endif %}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full 
+                                        {% if subject.marks >= 60 %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+                                        {% if subject.marks >= 60 %}Passed{% else %}Failed{% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center py-8 text-gray-500">
+                                    <i class="fas fa-chart-pie text-gray-300 text-4xl mb-3 block"></i>
+                                    Your marks will be uploaded soon...
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Chart Section -->
+                <div class="mt-6 h-64">
+                    <canvas id="marksChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Notifications Section -->
+            <div class="bg-white rounded-xl shadow-md p-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-primary-600 flex items-center">
+                        <i class="fas fa-bell mr-2"></i> Notifications
+                    </h2>
+                    <a href="#" class="text-primary-600 hover:text-primary-700 text-sm font-medium">
+                        Mark All as Read
+                    </a>
+                </div>
+                
+                <div class="space-y-4">
+                    {% for notification in notifications %}
+                        <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-primary-500 hover:shadow-md transition">
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-medium text-gray-900">{{ notification.message }}</h3>
+                                <span class="text-xs text-gray-500">{{ notification.created_at|default:"2 hours ago" }}</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">{{ notification.description|default:"Click to view more details about this notification." }}</p>
+                        </div>
+                    {% empty %}
+                        <div class="p-6 bg-gray-50 rounded-lg text-center">
+                            <i class="fas fa-check-circle text-4xl text-gray-300 mb-2"></i>
+                            <p>No new notifications.</p>
+                            <p class="text-sm text-gray-500 mt-1">You're all caught up!</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chatbot Section -->
+    <div class="fixed bottom-5 right-5 z-40">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden w-80" id="chatbot">
+            <div class="bg-primary-600 text-white p-4 flex justify-between items-center">
+                <div class="flex items-center">
+                    <i class="fas fa-robot mr-2"></i>
+                    <h3 class="font-bold">AI Assistant</h3>
+                </div>
+                <div class="flex space-x-2">
+                    <button id="minimizeChatbot" class="text-white hover:text-gray-200 focus:outline-none">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button id="closeChatbot" class="text-white hover:text-gray-200 focus:outline-none">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="chat-container" class="p-4 h-80 overflow-y-auto chat-container space-y-4">
+                <div class="chat-bubble-bot">
+                    Hello! I'm your DIT University assistant. How can I help you today?
+                </div>
+            </div>
+            
+            <div class="flex items-center border-t">
+                <input 
+                    type="text" 
+                    id="chat-input" 
+                    placeholder="Type your message..." 
+                    class="w-full px-4 py-3 focus:outline-none"
+                />
+                <button 
+                    onclick="sendMessage()" 
+                    class="bg-primary-600 text-white px-4 py-3 hover:bg-primary-700 transition">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Minimized Chatbot Button -->
+        <div id="chatbotButton" class="hidden">
+            <button class="bg-primary-600 text-white p-4 rounded-full shadow-lg hover:bg-primary-700 transition animate-bounce-slow">
+                <i class="fas fa-robot text-xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-12 py-6">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0 flex items-center">
+                    <img src="https://via.placeholder.com/40" alt="DIT Logo" class="h-10 w-10 mr-3">
+                    <div>
+                        <p class="text-sm text-gray-600">© {{ year }} DIT University. All Rights Reserved.</p>
+                        <p class="text-xs text-gray-500">Mussoorie Diversion Road, Dehradun, Uttarakhand - 248009</p>
+                    </div>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-primary-600 transition">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-primary-600 transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-primary-600 transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-primary-600 transition">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Initialize AOS animations
+            AOS.init({
+                duration: 800,
+                easing: 'ease-out',
+                once: true
+            });
+            
+            // Mobile Sidebar Toggle
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const closeSidebar = document.getElementById('closeSidebar');
+            const mobileSidebar = document.getElementById('mobileSidebar');
+            const sidebarPanel = document.getElementById('sidebarPanel');
+            
+            sidebarToggle.addEventListener('click', () => {
+                mobileSidebar.classList.remove('hidden');
+                setTimeout(() => {
+                    sidebarPanel.classList.remove('-translate-x-full');
+                }, 50);
+            });
+            
+            closeSidebar.addEventListener('click', () => {
+                sidebarPanel.classList.add('-translate-x-full');
+                setTimeout(() => {
+                    mobileSidebar.classList.add('hidden');
+                }, 300);
+            });
+            
+            mobileSidebar.addEventListener('click', (e) => {
+                if (e.target === mobileSidebar) {
+                    sidebarPanel.classList.add('-translate-x-full');
+                    setTimeout(() => {
+                        mobileSidebar.classList.add('hidden');
+                    }, 300);
+                }
+            });
+            
+            // Chatbot Toggle
+            const chatbot = document.getElementById('chatbot');
+            const chatbotButton = document.getElementById('chatbotButton');
+            const minimizeChatbot = document.getElementById('minimizeChatbot');
+            const closeChatbot = document.getElementById('closeChatbot');
+            
+            minimizeChatbot.addEventListener('click', () => {
+                chatbot.classList.add('hidden');
+                chatbotButton.classList.remove('hidden');
+            });
+            
+            chatbotButton.addEventListener('click', () => {
+                chatbot.classList.remove('hidden');
+                chatbotButton.classList.add('hidden');
+            });
+            
+            closeChatbot.addEventListener('click', () => {
+                chatbot.classList.add('hidden');
+                chatbotButton.classList.remove('hidden');
+            });
+            
+            // Extract marks and subjects for chart
+            const marks = [
+                {% for subject in subjects %}
+                    {{ subject.marks }}{% if not forloop.last %},{% endif %}
+                {% empty %}
+                    85, 76, 92, 68, 79
+                {% endfor %}
+            ];
+
+            const subjects = [
+                {% for subject in subjects %}
+                    "{{ subject.name }}"{% if not forloop.last %},{% endif %}
+                {% empty %}
+                    "Data Structures", "Database Systems", "Computer Networks", "Operating Systems", "Web Development"
+                {% endfor %}
+            ];
+
+            // GPA Calculation
+            const gpa = (marks.reduce((a, b) => a + b, 0) / marks.length) / 10;
+            document.getElementById('gpa-display').innerText = gpa.toFixed(2);
+
+            // Chart.js Visualization
+            const ctx = document.getElementById('marksChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: subjects,
+                    datasets: [{
+                        label: 'Marks',
+                        data: marks,
+                        backgroundColor: 'rgba(14, 165, 233, 0.7)',
+                        borderColor: 'rgba(14, 165, 233, 1)',
+                        borderWidth: 2,
+                        borderRadius: 5,
+                        barThickness: 20,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                display: true,
+                                drawBorder: false,
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false,
+                                drawBorder: false
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        // Chatbot functionality
+        
+async function sendMessage() {
+    const inputField = document.getElementById("chat-input");
+    const chatContainer = document.getElementById("chat-container");
+
+    const userMessage = inputField.value.trim();
+    if (!userMessage) return;
+
+    // Display user message
+    chatContainer.innerHTML += `<div class="text-right"><strong>You:</strong> ${userMessage}</div>`;
+    inputField.value = "";
+
+    try {
+        const response = await fetch("/chatbot/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: userMessage })
+        });
+
+        const data = await response.json();
+        chatContainer.innerHTML += `<div class="text-left"><strong>Bot:</strong> ${data.response}</div>`;
+
+        // Auto-scroll to the latest message
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    } catch (error) {
+        chatContainer.innerHTML += `<div class="text-red-500">Error connecting to chatbot.</div>`;
+    }
+}
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academics - DIT University</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: ["class"],
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: "#D4AF37", // Golden color
+                            50: "#FBF8E9",
+                            100: "#F7F1D4",
+                            200: "#F0E4A9",
+                            300: "#E8D77F",
+                            400: "#E1CA54",
+                            500: "#D4AF37", // Main golden color
+                            600: "#B99B2F",
+                            700: "#9F8728",
+                            800: "#847220",
+                            900: "#6A5E19",
+                            950: "#504712"
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/css">
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .bg-hero-image {
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.452) 30%, rgba(0, 0, 0, 0.4) 70%, rgba(0, 0, 0, 0) 100%), 
+                        url("/static/DIT2.jpeg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+}
+.popup {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #28a745; /* Green background for success */
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        display: block;
+        z-index: 1000;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .error {
+        background: #dc3545; /* Red for errors */
+    }
+
+
+    </style>
+</head>
+<body class="min-h-screen bg-white">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center" onclick="trackUserAction('logo')">
+                        <img src="/static/dit_logo2.jpeg" alt="DIT University Logo" class="h-10 w-auto">
+                        <span class="ml-2 text-xl font-bold text-black">DIT University</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="/" class="text-black hover:text-primary transition-colors" onclick="trackUserAction('nav_home')">
+                        HOME
+                    </a>
+                   
+                    <a href="/ACADEMICS" class="text-primary font-medium" onclick="trackUserAction('nav_academics')">
+                        ACEDEMICS
+                    </a>
+                    <a href="/ADMISSIONS" class="text-black hover:text-primary transition-colors" onclick="trackUserAction('nav_admissions')">
+                        ADMISSION
+                    </a>
+                    <a href="/PROGRAMS" class="text-black hover:text-primary transition-colors" onclick="trackUserAction('nav_research')">
+                        PROGRAMS
+                    </a>
+                    <a href="/CAMPUS LIFE" class="text-black hover:text-primary transition-colors" onclick="trackUserAction('nav_campus_life')">
+                        CAMPUS LIFE
+                    </a>
+                    <a href="/CONTACT" class="text-black hover:text-primary transition-colors" onclick="trackUserAction('nav_contact')">
+                        CONTACT
+                    </a>
+
+
+                    <div class="hidden sm:block">
+                        {% if user.is_authenticated %}
+                        <span class="text-sm md:text-lg font-medium text-blue-600 truncate max-w-[100px] md:max-w-full">Welcome, {{ user.username }} 👋</span>
+                        <a href="{% url 'logout' %}" class="bg-red-500 text-white px-3 py-1 md:px-4 md:py-2 rounded text-sm">Logout</a>
+                        {% else %}
+                        <a href="{% url 'auth' %}" 
+                            class="bg-gradient-to-r from-teal-500 to-blue-500 text-white px-6 py-3 md:px-8 md:py-4 rounded-lg text-lg font-bold shadow-lg transform transition duration-300 hover:scale-105 hover:from-teal-600 hover:to-blue-600">
+                            Login / Signup
+                        </a>
+    
+                        {% endif %}
+                    </div>
+                </nav>
+                
+                <!-- Search and Mobile Menu Button -->
+                <div class="flex items-center">
+                    <button class="p-2 text-black hover:text-primary transition-colors mr-2" onclick="trackUserAction('search_button_click')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.3-4.3"></path>
+                        </svg>
+                    </button>
+                    <button id="mobile-menu-button" class="md:hidden p-2 text-black hover:text-primary transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6" id="menu-icon">
+                            <line x1="4" x2="20" y1="12" y2="12"></line>
+                            <line x1="4" x2="20" y1="6" y2="6"></line>
+                            <line x1="4" x2="20" y1="18" y2="18"></line>
+                        </svg>
+                    </button>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div id="mobile-menu" class="md:hidden bg-white border-t border-gray-200 hidden">
+            <div class="container mx-auto px-4 py-3">
+                <nav class="flex flex-col space-y-3">
+                    <a href="/" class="text-black hover:text-primary transition-colors py-2" onclick="handleMobileNavClick('mobile_nav_home')">
+                        Home
+                    </a>
+                    <a href="/about" class="text-black hover:text-primary transition-colors py-2" onclick="handleMobileNavClick('mobile_nav_about')">
+                        About
+                    </a>
+                    <a href="/academics" class="text-primary font-medium py-2" onclick="handleMobileNavClick('mobile_nav_academics')">
+                        Academics
+                    </a>
+                    <a href="/admissions" class="text-black hover:text-primary transition-colors py-2" onclick="handleMobileNavClick('mobile_nav_admissions')">
+                        Admissions
+                    </a>
+                    <a href="/research" class="text-black hover:text-primary transition-colors py-2" onclick="handleMobileNavClick('mobile_nav_research')">
+                        Research
+                    </a>
+                    <a href="/campus-life" class="text-black hover:text-primary transition-colors py-2" onclick="handleMobileNavClick('mobile_nav_campus_life')">
+                        Campus Life
+                    </a>
+                    <a href="/contact" class="text-black hover:text-primary transition-colors py-2" onclick="handleMobileNavClick('mobile_nav_contact')">
+                        Contact
+                    </a>
+
+                    <div class="sm:hidden pt-2 pb-1">
+                        {% if user.is_authenticated %}
+                        <span class="block px-3 py-1 text-blue-600 font-medium">Welcome, {{ user.username }} 👋</span>
+                        <a href="{% url 'logout' %}" class="block mt-1 mx-3 bg-red-500 text-white px-4 py-2 rounded text-center">Logout</a>
+                        {% else %}
+                        <a href="{% url 'auth' %}" class="block mx-3 bg-teal-500 text-white px-4 py-2 rounded text-center">Login / Signup</a>
+                        {% endif %}
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-cover bg-center bg-no-repeat py-16 md:py-24 bg-hero-image">
+        <div class="absolute inset-0 bg-black/60"></div> <!-- Dark Overlay -->
+        <div class="relative container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                        Academic Excellence & Innovation
+                    </h1>
+                    <p class="text-lg text-gray-200 mb-8">
+                        Discover world-class education at DIT University with cutting-edge programs, 
+                        distinguished faculty, and a vibrant academic environment designed to nurture 
+                        future leaders and innovators.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button 
+                            class="bg-primary hover:bg-primary-600 text-white font-medium py-3 px-6 rounded-md shadow-sm transition-all flex items-center"
+                            onclick="trackUserAction('explore_programs_click')"
+                        >
+                            Explore Programs
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4">
+                                <path d="M5 12h14"></path>
+                                <path d="m12 5 7 7-7 7"></path>
+                            </svg>
+                        </button>
+                        <button 
+                            class="bg-white hover:bg-gray-100 text-black font-medium py-3 px-6 rounded-md shadow-sm border border-gray-300 transition-all flex items-center"
+                            onclick="trackUserAction('download_brochure_click')"
+                        >
+                            Download Brochure
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" x2="12" y1="15" y2="3"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="relative">
+                    <img 
+                        src="" 
+                        alt="DIT University Campus" 
+                        class="rounded-lg shadow-lg object-cover" 
+                    />
+                    <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-lg">
+                        <div class="flex items-center space-x-2">
+                            <div class="bg-primary/10 p-2 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-black">NAAC Accredited</p>
+                                <p class="text-xs text-gray-600">A+ Grade Institution</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Stats -->
+        <div class="relative container mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm text-center">
+                    <p class="text-3xl md:text-4xl font-bold text-primary mb-2">50+</p>
+                    <p class="text-black">Academic Programs</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm text-center">
+                    <p class="text-3xl md:text-4xl font-bold text-primary mb-2">300+</p>
+                    <p class="text-black">Faculty Members</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm text-center">
+                    <p class="text-3xl md:text-4xl font-bold text-primary mb-2">15:1</p>
+                    <p class="text-black">Student-Faculty Ratio</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm text-center">
+                    <p class="text-3xl md:text-4xl font-bold text-primary mb-2">95%</p>
+                    <p class="text-black">Placement Rate</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Search Section -->
+    <section class="py-8 bg-white border-b border-gray-200">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <form 
+                id="search-form"
+                class="max-w-3xl mx-auto flex items-center"
+            >
+                <div class="relative flex-grow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                    </svg>
+                    <input
+                        type="text"
+                        placeholder="Search programs, courses, faculty..."
+                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                        id="search-input"
+                    />
+                </div>
+                <button 
+                    type="submit"
+                    class="ml-4 bg-primary hover:bg-primary-600 text-white font-medium py-3 px-6 rounded-md shadow-sm transition-all"
+                >
+                    Search
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-12 md:py-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Tabs -->
+            <div class="border-b border-gray-200 mb-8">
+                <div class="flex overflow-x-auto hide-scrollbar space-x-8">
+                    <button
+                        class="pb-4 px-1 border-b-2 border-primary text-primary font-medium transition-colors whitespace-nowrap tab-button"
+                        data-tab="programs"
+                    >
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-2">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            </svg>
+                            Academic Programs
+                        </div>
+                    </button>
+                    <button
+                        class="pb-4 px-1 text-black hover:text-gray-900 transition-colors whitespace-nowrap tab-button"
+                        data-tab="faculty"
+                    >
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-2">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            Faculty
+                        </div>
+                    </button>
+                    <button
+                        class="pb-4 px-1 text-black hover:text-gray-900 transition-colors whitespace-nowrap tab-button"
+                        data-tab="research"
+                    >
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-2">
+                                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" x2="8" y1="13" y2="13"></line>
+                                <line x1="16" x2="8" y1="17" y2="17"></line>
+                                <line x1="10" x2="8" y1="9" y2="9"></line>
+                            </svg>
+                            Research
+                        </div>
+                    </button>
+                    <button
+                        class="pb-4 px-1 text-black hover:text-gray-900 transition-colors whitespace-nowrap tab-button"
+                        data-tab="calendar"
+                    >
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-2">
+                                <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                                <line x1="16" x2="16" y1="2" y2="6"></line>
+                                <line x1="8" x2="8" y1="2" y2="6"></line>
+                                <line x1="3" x2="21" y1="10" y2="10"></line>
+                            </svg>
+                            Academic Calendar
+                        </div>
+                    </button>
+                    <button
+                        class="pb-4 px-1 text-black hover:text-gray-900 transition-colors whitespace-nowrap tab-button"
+                        data-tab="faq"
+                    >
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 mr-2">
+                                <path d="M8.21 13.89 7 23l9-9"></path>
+                                <path d="M19 8.85c2.11-2.11 3.11-4.85.5-7.46-2.61-2.61-5.35-1.61-7.46.5-1.59 1.59-2.76 3.87-3.34 6.14"></path>
+                                <path d="M14.5 17.5 3 6"></path>
+                                <path d="M7 10.5 7.5 11"></path>
+                                <path d="m13 7 .5.5"></path>
+                                <path d="M17 11l.5.5"></path>
+                            </svg>
+                            FAQs
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="mt-8">
+                <!-- Academic Programs -->
+                 
+                <div id="programs-tab" class="tab-content">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-3xl font-bold text-black">Academic Programs</h2>
+                        <a 
+                            href="/PROGRAMS"
+                            class="text-primary hover:text-primary-600 font-medium flex items-center"
+                            onclick="trackUserAction('view_all_programs')"
+                        >
+                            View All Programs
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 h-5 w-5">
+                                <path d="m9 18 6-6-6-6"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="programs-container">
+                        <!-- Programs will be loaded dynamically via JavaScript -->
+                    </div>
+                    
+                    <div class="mt-12">
+                        <h3 class="text-2xl font-bold text-black mb-6">Why Choose DIT University?</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
+                                <div class="bg-primary/10 p-3 rounded-full w-fit mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary">
+                                        <path d="M8.21 13.89 7 23l9-9"></path>
+                                        <path d="M19 8.85c2.11-2.11 3.11-4.85.5-7.46-2.61-2.61-5.35-1.61-7.46.5-1.59 1.59-2.76 3.87-3.34 6.14"></path>
+                                        <path d="M14.5 17.5 3 6"></path>
+                                        <path d="M7 10.5 7.5 11"></path>
+                                        <path d="m13 7 .5.5"></path>
+                                        <path d="M17 11l.5.5"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold text-black mb-2">Accredited Excellence</h4>
+                                <p class="text-black">
+                                    NAAC A+ accredited institution with programs approved by UGC, AICTE, and other national regulatory bodies.
+                                </p>
+                            </div>
+                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
+                                <div class="bg-primary/10 p-3 rounded-full w-fit mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                                        <path d="M2 12h20"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold text-black mb-2">Global Exposure</h4>
+                                <p class="text-black">
+                                    International collaborations with top universities worldwide, offering student exchange programs and global internship opportunities.
+                                </p>
+                            </div>
+                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
+                                <div class="bg-primary/10 p-3 rounded-full w-fit mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary">
+                                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold text-black mb-2">Innovative Curriculum</h4>
+                                <p class="text-black">
+                                    Industry-aligned curriculum designed with input from academic experts and industry leaders to ensure relevance and employability.
+                                </p>
+                            </div>
+                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
+                                <div class="bg-primary/10 p-3 rounded-full w-fit mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary">
+                                        <path d="M20 7h-7l1-5H8l-1 5H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1Z"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold text-black mb-2">Career Success</h4>
+                                <p class="text-black">
+                                    Exceptional placement record with top companies visiting campus for recruitment and internship opportunities.
+                                </p>
+                            </div>
+                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
+                                <div class="bg-primary/10 p-3 rounded-full w-fit mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold text-black mb-2">Distinguished Faculty</h4>
+                                <p class="text-black">
+                                    Learn from experienced professors with doctoral degrees from prestigious institutions and extensive industry experience.
+                                </p>
+                            </div>
+                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
+                                <div class="bg-primary/10 p-3 rounded-full w-fit mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-primary">
+                                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" x2="8" y1="13" y2="13"></line>
+                                        <line x1="16" x2="8" y1="17" y2="17"></line>
+                                        <line x1="10" x2="8" y1="9" y2="9"></line>
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold text-black mb-2">Research Focus</h4>
+                                <p class="text-black">
+                                    Strong emphasis on research with well-equipped laboratories, research centers, and funding opportunities for innovative projects.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Faculty -->
+                <div id="faculty-tab" class="tab-content hidden">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-3xl font-bold text-black">Our Distinguished Faculty</h2>
+                        <a 
+                            href="/academics/faculty-directory"
+                            class="text-primary hover:text-primary-600 font-medium flex items-center"
+                            onclick="trackUserAction('view_all_faculty')"
+                        >
+                            View Faculty Directory
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 h-5 w-5">
+                                <path d="m9 18 6-6-6-6"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="faculty-container">
+                        <!-- Faculty will be loaded dynamically via JavaScript -->
+                    </div>
+                    
+                    <div class="mt-12 bg-gray-50 p-8 rounded-lg">
+                        <h3 class="text-2xl font-bold text-black mb-6">Faculty Development Programs</h3>
+                        <p class="text-black mb-6">
+                            DIT University is committed to the continuous professional development of its faculty members. 
+                            We offer various programs and opportunities to enhance teaching skills, research capabilities, 
+                            and industry connections.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <h4 class="text-lg font-bold text-black mb-3">Research Support</h4>
+                                <p class="text-black">
+                                    Funding for research projects, conference attendance, and publication in prestigious journals.
+                                </p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <h4 class="text-lg font-bold text-black mb-3">Pedagogical Training</h4>
+                                <p class="text-black">
+                                    Workshops and seminars on innovative teaching methodologies and educational technologies.
+                                </p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <h4 class="text-lg font-bold text-black mb-3">Industry Sabbaticals</h4>
+                                <p class="text-black">
+                                    Opportunities for faculty to work in industry settings to gain practical insights and build connections.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Research -->
+                <div id="research-tab" class="tab-content hidden">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-3xl font-bold text-black">Research & Innovation</h2>
+                        <a 
+                            href="/Research2"
+                            class="text-primary hover:text-primary-600 font-medium flex items-center"
+                            onclick="trackUserAction('view_all_research')"
+                        >
+                            View All Research
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 h-5 w-5">
+                                <path d="m9 18 6-6-6-6"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8" id="research-container">
+                        <!-- Research will be loaded dynamically via JavaScript -->
+                    </div>
+                    
+                    <div class="mt-12">
+                        <h3 class="text-2xl font-bold text-black mb-6">Research Centers</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
+                                <h4 class="text-xl font-bold text-black mb-3">Center for Artificial Intelligence and Robotics</h4>
+                                <p class="text-black mb-4">
+                                    Focused on cutting-edge research in AI, machine learning, computer vision, and robotics with applications in healthcare, agriculture, and smart cities.
+                                </p>
+                                <a 
+                                    href="/academics/research/centers/ai-robotics"
+                                    class="text-primary hover:text-primary-600 font-medium text-sm flex items-center"
+                                    onclick="trackUserAction('research_center_ai')"
+                                >
+                                    Visit Center
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 h-4 w-4">
+                                        <path d="m9 18 6-6-6-6"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
+                                <h4 class="text-xl font-bold text-black mb-3">Center for Sustainable Development</h4>
+                                <p class="text-black mb-4">
+                                    Dedicated to research on renewable energy, sustainable construction, waste management, and environmental conservation technologies.
+                                </p>
+                                <a 
+                                    href="/academics/research/centers/sustainable-development"
+                                    class="text-primary hover:text-primary-600 font-medium text-sm flex items-center"
+                                    onclick="trackUserAction('research_center_sustainability')"
+                                >
+                                    Visit Center
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 h-4 w-4">
+                                        <path d="m9 18 6-6-6-6"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
+                                <h4 class="text-xl font-bold text-black mb-3">Center for Biomedical Engineering</h4>
+                                <p class="text-black mb-4">
+                                    Conducts research on medical devices, biomaterials, tissue engineering, and healthcare technologies to address critical medical challenges.
+                                </p>
+                                <a 
+                                    href="/academics/research/centers/biomedical"
+                                    class="text-primary hover:text-primary-600 font-medium text-sm flex items-center"
+                                    onclick="trackUserAction('research_center_biomedical')"
+                                >
+                                    Visit Center
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 h-4 w-4">
+                                        <path d="m9 18 6-6-6-6"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="bg-white p-6 border border-gray-200 rounded-lg">
+                                <h4 class="text-xl font-bold text-black mb-3">Center for Business Analytics</h4>
+                                <p class="text-black mb-4">
+                                    Focuses on data analytics, business intelligence, financial modeling, and market research to drive business innovation and decision-making.
+                                </p>
+                                <a 
+                                    href="/academics/research/centers/business-analytics"
+                                    class="text-primary hover:text-primary-600 font-medium text-sm flex items-center"
+                                    onclick="trackUserAction('research_center_analytics')"
+                                >
+                                    Visit Center
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 h-4 w-4">
+                                        <path d="m9 18 6-6-6-6"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Calendar -->
+                <div id="calendar-tab" class="tab-content hidden">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-3xl font-bold text-black">Academic Calendar 2023-2024</h2>
+                        <button 
+                            class="bg-primary hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-md shadow-sm transition-all flex items-center"
+                            onclick="handleDownload('academic_calendar_2023_2024')"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" x2="12" y1="15" y2="3"></line>
+                            </svg>
+                            Download Calendar
+                        </button>
+                    </div>
+                    
+                    <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="text-xl font-bold text-black mb-4">Fall Semester</h3>
+                                    <div class="space-y-4" id="fall-events">
+                                        <!-- Fall events will be loaded dynamically via JavaScript -->
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-black mb-4">Spring Semester</h3>
+                                    <div class="space-y-4" id="spring-events">
+                                        <!-- Spring events will be loaded dynamically via JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-12 bg-gray-50 p-8 rounded-lg">
+                        <h3 class="text-2xl font-bold text-black mb-6">Important Dates & Deadlines</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <h4 class="text-lg font-bold text-black mb-3">Admission Deadlines</h4>
+                                <ul class="space-y-2 text-black">
+                                    <li class="flex items-start">
+                                        <span class="inline-block h-1.5 w-1.5 rounded-full bg-primary mt-2 mr-2"></span>
+                                        <span>Application Deadline: April 30, 2023</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="inline-block h-1.5 w-1.5 rounded-full bg-primary mt-2 mr-2"></span>
+                                        <span>Document Submission: May 15, 2023</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="inline-block h-1.5 w-1.5 rounded-full bg-primary mt-2 mr-2"></span>
+                                        <span>Late Applications: June 15, 2023</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <h4 class="text-lg font-bold text-black mb-3">Examination Schedule</h4>
+                                <ul class="space-y-2 text-black">
+                                    <li class="flex items-start">
+                                        <span class="inline-block h-1.5 w-1.5 rounded-full bg-primary mt-2 mr-2"></span>
+                                        <span>Mid-Term Exams: Oct 5-15, 2023</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="inline-block h-1.5 w-1.5 rounded-full bg-primary mt-2 mr-2"></span>
+                                        <span>Final Exams: Dec 5-20, 2023</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="inline-block h-1.5 w-1.5 rounded-full bg-primary mt-2 mr-2"></span>
+                                        <span>Result Declaration: Jan 10, 2024</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-sm">
+                                <h4 class="text-lg font-bold text-black mb-3">Fee Payment</h4>
+                                <ul class="space-y-2 text-black">
+                                    <li class="flex items-start">
+                                        <span class="inline-block h-1.5 w-1.5 rounded-full bg-primary mt-2 mr-2"></span>
+                                        <span>Fall Semester: July 31, 2023</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="inline-block h-1.5 w-1.5 rounded-full bg-primary mt-2 mr-2"></span>
+                                        <span>Spring Semester: Jan 15, 2024</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="inline-block h-1.5 w-1.5 rounded-full bg-primary mt-2 mr-2"></span>
+                                        <span>Late Fee Deadline: +15 days</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQs -->
+                <div id="faq-tab" class="tab-content hidden">
+                    <div class="mb-8">
+                        <h2 class="text-3xl font-bold text-black">Frequently Asked Questions</h2>
+                        <p class="text-black mt-2">
+                            Find answers to common questions about academics at DIT University.
+                        </p>
+                    </div>
+                    
+                    <div class="space-y-4" id="faqs-container">
+                        <!-- FAQs will be loaded dynamically via JavaScript -->
+                    </div>
+                    
+                    <div class="mt-12 bg-primary/5 p-8 rounded-lg">
+                        <h3 class="text-2xl font-bold text-black mb-4">Still Have Questions?</h3>
+                        <p class="text-black mb-6">
+                            Our academic advisors are here to help you with any questions you may have about our programs, 
+                            admission requirements, or academic policies.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <a 
+                                href="/CONTACT#contact-form"
+                                class="bg-primary hover:bg-primary-600 text-white font-medium py-3 px-6 rounded-md shadow-sm transition-all flex items-center justify-center"
+                                onclick="trackUserAction('contact_academic_advisors')"
+                            >
+                                Contact Academic Advisors
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4">
+                                    <path d="M5 12h14"></path>
+                                    <path d="m12 5 7 7-7 7"></path>
+                                </svg>
+                            </a>
+                            <a 
+                                href="/academics/faq"
+                                class="bg-white hover:bg-gray-50 text-black font-medium py-3 px-6 rounded-md shadow-sm border border-gray-300 transition-all flex items-center justify-center"
+                                onclick="trackUserAction('view_all_faqs')"
+                            >
+                                View All FAQs
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4">
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="bg-gradient-to-r from-primary to-primary-700 py-16">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-white mb-4">Ready to Begin Your Academic Journey?</h2>
+                    <p class="text-white/90 mb-8">
+                        Take the first step towards a successful career with DIT University's world-class academic programs.
+                        Apply now or request more information about our admission process.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a 
+                            href="/form#application-form"
+                            class="bg-white hover:bg-gray-100 text-primary font-medium py-3 px-6 rounded-md shadow-sm transition-all flex items-center"
+                            onclick="trackUserAction('apply_now_cta')"
+                        >
+                            Apply Now
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4">
+                                <path d="M5 12h14"></path>
+                                <path d="m12 5 7 7-7 7"></path>
+                            </svg>
+                        </a>
+                        <a 
+                            href="/ADMISSIONS#admission-process"
+                            class="bg-transparent hover:bg-white/10 text-white border border-white font-medium py-3 px-6 rounded-md shadow-sm transition-all flex items-center"
+                            onclick="trackUserAction('request_info_cta')"
+                        >
+                            Request Information
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 h-4 w-4">
+                                <path d="m9 18 6-6-6-6"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-black mb-6">Follow Us on Social Media</h3>
+                    <p class="text-gray-600 mb-8">
+                        Join our vibrant online community and stay connected with campus life, events, 
+                        achievements, and opportunities at DIT University.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <a 
+                            href="https://facebook.com" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            class="bg-gray-100 hover:bg-gray-200 p-4 rounded-full transition-colors"
+                            onclick="trackUserAction('social_facebook')"
+                        >
+                            <span class="sr-only">Facebook</span>
+                            <svg class="h-6 w-6 text-[#1877F2]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        
+                        <a 
+                            href="https://twitter.com" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            class="bg-gray-100 hover:bg-gray-200 p-4 rounded-full transition-colors"
+                            onclick="trackUserAction('social_twitter')"
+                        >
+                            <span class="sr-only">Twitter</span>
+                            <svg class="h-6 w-6 text-[#1DA1F2]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                            </svg>
+                        </a>
+                        
+                        <a 
+                            href="https://instagram.com" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            class="bg-gray-100 hover:bg-gray-200 p-4 rounded-full transition-colors"
+                            onclick="trackUserAction('social_instagram')"
+                        >
+                            <span class="sr-only">Instagram</span>
+                            <svg class="h-6 w-6 text-[#E4405F]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        
+                        <a 
+                            href="https://linkedin.com" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            class="bg-gray-100 hover:bg-gray-200 p-4 rounded-full transition-colors"
+                            onclick="trackUserAction('social_linkedin')"
+                        >
+                            <span class="sr-only">LinkedIn</span>
+                            <svg class="h-6 w-6 text-[#0A66C2]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                            </svg>
+                        </a>
+                        
+                        <a 
+                            href="https://youtube.com" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            class="bg-gray-100 hover:bg-gray-200 p-4 rounded-full transition-colors"
+                            onclick="trackUserAction('social_youtube')"
+                        >
+                            <span class="sr-only">YouTube</span>
+                            <svg class="h-6 w-6 text-[#FF0000]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 0 1-1.768 1.768c-1.56.419-7.814.419-7.814.419s-6.255 0-7.814-.419a2.505 2.505 0 0 1-1.768-1.768C2 15.255 2 12 2 12s0-3.255.417-4.814a2.507 2.507 0 0 1 1.768-1.768C5.744 5 11.998 5 11.998 5s6.255 0 7.814.418ZM15.194 12 10 15V9l5.194 3Z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    {% include 'footer.html' %}
+
+    <!-- JavaScript -->
+    <script>
+        // User tracking utility
+        function trackUserAction(action, details = {}) {
+            // In a real implementation, this would send data to an analytics service
+            console.log(`[User Action]: ${action}`, details);
+            
+            // Example of sending to a tracking endpoint
+            // fetch('/api/track', {
+            //   method: 'POST',
+            //   headers: { 'Content-Type': 'application/json' },
+            //   body: JSON.stringify({ action, details, timestamp: new Date().toISOString() })
+            // });
+        }
+
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('hidden');
+            trackUserAction('mobile_menu_toggle', { isOpen: !isOpen });
+            
+            // Change icon based on menu state
+            if (mobileMenu.classList.contains('hidden')) {
+                menuIcon.innerHTML = `
+                    <line x1="4" x2="20" y1="12" y2="12"></line>
+                    <line x1="4" x2="20" y1="6" y2="6"></line>
+                    <line x1="4" x2="20" y1="18" y2="18"></line>
+                `;
+            } else {
+                menuIcon.innerHTML = `
+                    <line x1="18" x2="6" y1="6" y2="18"></line>
+                    <line x1="6" x2="18" y1="6" y2="18"></line>
+                `;
+            }
+        });
+
+        function handleMobileNavClick(linkName) {
+            trackUserAction(linkName);
+            mobileMenu.classList.add('hidden');
+        }
+
+        // Tab switching
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tab = button.getAttribute('data-tab');
+                
+                // Update active tab button
+                tabButtons.forEach(btn => {
+                    if (btn.getAttribute('data-tab') === tab) {
+                        btn.classList.add('border-b-2', 'border-primary', 'text-primary', 'font-medium');
+                        btn.classList.remove('text-black', 'hover:text-gray-900');
+                    } else {
+                        btn.classList.remove('border-b-2', 'border-primary', 'text-primary', 'font-medium');
+                        btn.classList.add('text-black', 'hover:text-gray-900');
+                    }
+                });
+                
+                // Show active tab content
+                tabContents.forEach(content => {
+                    if (content.id === `${tab}-tab`) {
+                        content.classList.remove('hidden');
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                });
+                
+                trackUserAction('tab_change', { tab });
+            });
+        });
+
+        // Search form
+        const searchForm = document.getElementById('search-form');
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const searchQuery = document.getElementById('search-input').value;
+            trackUserAction('search', { query: searchQuery });
+            // In a real implementation, this would trigger a search
+            console.log("Searching for:", searchQuery);
+        });
+
+        
+
+        // Newsletter form
+        const newsletterForm = document.getElementById('newsletter-form');
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            trackUserAction('newsletter_submit');
+            // In a real implementation, this would submit the form
+            alert('Thank you for subscribing to our newsletter!');
+        });
+
+        // Handle download
+        function handleDownload(documentName) {
+            trackUserAction('document_download', { document: documentName });
+            // In a real implementation, this would trigger a download
+            alert(`Downloading ${documentName}...`);
+        }
+
+        // Toggle FAQ
+        function toggleFaq(index) {
+            const faqItem = document.getElementById(`faq-${index}`);
+            const faqContent = document.getElementById(`faq-content-${index}`);
+            const faqIcon = document.getElementById(`faq-icon-${index}`);
+            
+            const isExpanded = faqContent.classList.toggle('hidden');
+            faqIcon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+            
+            trackUserAction('faq_toggle', { index, expanded: !isExpanded });
+        }
+
+        // Track page view on load
+        document.addEventListener('DOMContentLoaded', () => {
+            trackUserAction('page_view', { page: 'academics' });
+            
+            // Load data
+            loadPrograms();
+            loadFaculty();
+            loadResearch();
+            loadCalendarEvents();
+            loadFaqs();
+            
+            // Track scroll depth
+            let scrollPosition = 0;
+            const handleScroll = () => {
+                const position = window.scrollY;
+                
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (position / height) * 100;
+                
+                if (scrolled > 25 && scrollPosition < window.scrollY) {
+                    trackUserAction('scroll_depth', { depth: '25%' });
+                }
+                if (scrolled > 50 && scrollPosition < window.scrollY) {
+                    trackUserAction('scroll_depth', { depth: '50%' });
+                }
+                if (scrolled > 75 && scrollPosition < window.scrollY) {
+                    trackUserAction('scroll_depth', { depth: '75%' });
+                }
+                if (scrolled > 90 && scrollPosition < window.scrollY) {
+                    trackUserAction('scroll_depth', { depth: '90%' });
+                }
+                
+                scrollPosition = position;
+            };
+            
+            // Track time spent on page
+            const startTime = new Date();
+            const timeTrackingInterval = setInterval(() => {
+                const timeSpent = Math.floor((new Date().getTime() - startTime.getTime()) / 1000);
+                if (timeSpent === 30) {
+                    trackUserAction('time_spent', { seconds: 30 });
+                } else if (timeSpent === 60) {
+                    trackUserAction('time_spent', { seconds: 60 });
+                } else if (timeSpent % 60 === 0 && timeSpent > 0) {
+                    trackUserAction('time_spent', { minutes: timeSpent / 60 });
+                }
+            }, 1000);
+            
+            window.addEventListener('scroll', handleScroll);
+            
+            // Track page exit
+            window.addEventListener('beforeunload', () => {
+                trackUserAction('page_exit', { 
+                    timeSpent: Math.floor((new Date().getTime() - startTime.getTime()) / 1000) 
+                });
+                clearInterval(timeTrackingInterval);
+            });
+        });
+
+        // Load data functions
+        function loadPrograms() {
+            const programs = [
+                {
+                    id: 1,
+                    name: "Bachelor of Technology (B.Tech)",
+                    duration: "4 years",
+                    departments: ["Computer Science", "Mechanical", "Civil", "Electrical", "Electronics"],
+                    image: "/static/courses1.png"
+                },
+                {
+                    id: 2,
+                    name: "Master of Technology (M.Tech)",
+                    duration: "2 years",
+                    departments: ["Computer Science", "Mechanical", "Civil", "Electrical", "Electronics"],
+                    image: "/static/courses5.jpeg"
+                },
+                {
+                    id: 3,
+                    name: "Bachelor of Business Administration (BBA)",
+                    duration: "3 years",
+                    departments: ["Finance", "Marketing", "Human Resources", "Operations"],
+                    image: "/static/courses2.png"
+                },
+                {
+                    id: 4,
+                    name: "Master of Business Administration (MBA)",
+                    duration: "2 years",
+                    departments: ["Finance", "Marketing", "Human Resources", "Operations"],
+                    image: "/static/course15.webp"
+                },
+                {
+                    id: 5,
+                    name: "Bachelor of Science (B.Sc)",
+                    duration: "3 years",
+                    departments: ["Physics", "Chemistry", "Mathematics", "Biology"],
+                    image: "/static/course13.jpg"
+                },
+                {
+                    id: 6,
+                    name: "Ph.D Programs",
+                    duration: "3-5 years",
+                    departments: ["Engineering", "Management", "Sciences", "Humanities"],
+                    image: "/static/courses3.webp"
+                }
+            ];
+            
+            const programsContainer = document.getElementById('programs-container');
+            programsContainer.innerHTML = programs.map(program => `
+                <div 
+                    class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                    onclick="trackUserAction('program_card_click', { programId: ${program.id}, programName: '${program.name}' })"
+                >
+                    <img 
+                        src="${program.image}" 
+                        alt="${program.name}" 
+                        class="w-full h-48 object-cover" 
+                    />
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-black mb-2">${program.name}</h3>
+                        <div class="flex items-center text-black mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            <span>${program.duration}</span>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm font-medium text-black mb-2">Departments:</p>
+                            <div class="flex flex-wrap gap-2">
+                                ${program.departments.map(dept => `
+                                    <span class="inline-block bg-gray-100 text-black text-xs px-2 py-1 rounded-md">
+                                        ${dept}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <a 
+                            href="/academics/programs/${program.id}"
+                            class="text-primary hover:text-primary-600 font-medium text-sm flex items-center"
+                            onclick="event.stopPropagation(); trackUserAction('program_details_${program.id}')"
+                        >
+                            Program Details
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 h-4 w-4">
+                                <path d="m9 18 6-6-6-6"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadFaculty() {
+            const faculty = [
+                {
+                    id: 1,
+                    name: "Dr. Anand Kumar",
+                    position: "Professor & Dean of Engineering",
+                    department: "Computer Science",
+                    education: "Ph.D in Computer Science, IIT Delhi",
+                    image: "https://via.placeholder.com/150",
+                    research: ["Artificial Intelligence", "Machine Learning", "Data Science"]
+                },
+                {
+                    id: 2,
+                    name: "Dr. Priya Sharma",
+                    position: "Associate Professor",
+                    department: "Electronics Engineering",
+                    education: "Ph.D in Electronics, MIT",
+                    image: "https://via.placeholder.com/150",
+                    research: ["VLSI Design", "Embedded Systems", "IoT"]
+                },
+                {
+                    id: 3,
+                    name: "Dr. Rajesh Verma",
+                    position: "Professor & Head",
+                    department: "Mechanical Engineering",
+                    education: "Ph.D in Mechanical Engineering, Stanford University",
+                    image: "https://via.placeholder.com/150",
+                    research: ["Thermodynamics", "Fluid Mechanics", "Robotics"]
+                },
+                {
+                    id: 4,
+                    name: "Dr. Sunita Patel",
+                    position: "Assistant Professor",
+                    department: "Management Studies",
+                    education: "Ph.D in Management, IIM Ahmedabad",
+                    image: "https://via.placeholder.com/150",
+                    research: ["Finance", "Marketing Analytics", "Organizational Behavior"]
+                }
+            ];
+            
+            const facultyContainer = document.getElementById('faculty-container');
+            facultyContainer.innerHTML = faculty.map(member => `
+                <div 
+                    class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                    onclick="trackUserAction('faculty_card_click', { facultyId: ${member.id}, facultyName: '${member.name}' })"
+                >
+                    <div class="p-6 text-center">
+                        <img 
+                            src="${member.image}" 
+                            alt="${member.name}" 
+                            class="w-32 h-32 object-cover rounded-full mx-auto mb-4" 
+                        />
+                        <h3 class="text-xl font-bold text-black mb-1">${member.name}</h3>
+                        <p class="text-primary font-medium mb-1">${member.position}</p>
+                        <p class="text-black text-sm mb-3">${member.department}</p>
+                        <p class="text-black text-sm mb-4">${member.education}</p>
+                        <div class="mb-4">
+                            <p class="text-sm font-medium text-black mb-2">Research Areas:</p>
+                            <div class="flex flex-wrap justify-center gap-2">
+                                ${member.research.map(area => `
+                                    <span class="inline-block bg-gray-100 text-black text-xs px-2 py-1 rounded-md">
+                                        ${area}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <a 
+                            href="/academics/faculty/${member.id}"
+                            class="text-primary hover:text-primary-600 font-medium text-sm flex items-center justify-center"
+                            onclick="event.stopPropagation(); trackUserAction('faculty_profile_${member.id}')"
+                        >
+                            View Profile
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 h-4 w-4">
+                                <path d="m9 18 6-6-6-6"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadResearch() {
+    const researchHighlights = [
+        {
+            id: 1,
+            title: "AI-Driven Solutions for Smart Cities",
+            category: "Smart Cities",
+            description: "Research on implementing AI and IoT technologies to create more efficient and sustainable urban environments, focusing on traffic management, energy conservation, and public safety.",
+            image: "/static/AIML.png",
+            researchers: ["Dr. Anand Kumar", "Dr. Priya Sharma"],
+            publications: 12
+        },
+        {
+            id: 2,
+            title: "Renewable Energy Integration Systems",
+            category: "Sustainable Development",
+            description: "Development of advanced systems for integrating renewable energy sources into existing power grids, with a focus on efficiency, reliability, and cost-effectiveness.",
+            image: "/static/biotech.png",
+            researchers: ["Dr. Rajesh Verma", "Dr. Sunita Patel"],
+            publications: 8
+        },
+        {
+            id: 3,
+            title: "Blockchain for Supply Chain Management",
+            category: "Business Technology",
+            description: "Exploring the application of blockchain technology to enhance transparency, traceability, and security in global supply chain networks across various industries.",
+            image: "/static/course17.jpg",
+            researchers: ["Dr. Sunita Patel", "Dr. Anand Kumar"],
+            publications: 5
+        }
+    ];
+    
+    const researchContainer = document.getElementById('research-container');
+    researchContainer.innerHTML = researchHighlights.map(research => `
+        <div 
+            class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+            onclick="trackUserAction('research_card_click', { researchId: ${research.id}, researchTitle: '${research.title}' })"
+        >
+            <img 
+                src="${research.image}" 
+                alt="${research.title}" 
+                class="w-full h-48 object-cover" 
+            />
+            <div class="p-6">
+                <div class="flex items-center mb-3">
+                    <span class="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded-full">
+                        ${research.category}
+                    </span>
+                </div>
+                <h3 class="text-xl font-bold text-black mb-3">${research.title}</h3>
+                <p class="text-black mb-4">
+                    ${research.description}
+                </p>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-1 text-primary">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span class="text-sm text-black">${research.researchers.join(', ')}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-1 text-primary">
+                            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+                        </svg>
+                        <span class="text-sm text-black">${research.publications} Publications</span>
+                    </div>
+                </div>
+                <a 
+                    href="/Research${research.id}"  // Dynamically set the correct research URL
+                    class="text-primary hover:text-primary-600 font-medium text-sm flex items-center"
+                    onclick="event.stopPropagation(); trackUserAction('research_details_${research.id}')"
+                >
+                    Research Details
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 h-4 w-4">
+                        <path d="m9 18 6-6-6-6"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    `).join('');
+}
+
+        function loadCalendarEvents() {
+            const fallEvents = [
+                {
+                    date: "August 1, 2023",
+                    event: "Fall Semester Begins",
+                    type: "academic"
+                },
+                {
+                    date: "August 5-10, 2023",
+                    event: "Orientation Week for New Students",
+                    type: "orientation"
+                },
+                {
+                    date: "September 15, 2023",
+                    event: "Last Day to Add/Drop Courses",
+                    type: "deadline"
+                },
+                {
+                    date: "October 5-15, 2023",
+                    event: "Mid-Term Examinations",
+                    type: "exam"
+                },
+                {
+                    date: "November 1, 2023",
+                    event: "Registration for Spring Semester Begins",
+                    type: "registration"
+                },
+                {
+                    date: "December 5-20, 2023",
+                    event: "Final Examinations",
+                    type: "exam"
+                },
+                {
+                    date: "December 22, 2023",
+                    event: "Fall Semester Ends",
+                    type: "academic"
+                }
+            ];
+            
+            const springEvents = [
+                {
+                    date: "January 15, 2024",
+                    event: "Spring Semester Begins",
+                    type: "academic"
+                },
+                {
+                    date: "January 20-25, 2024",
+                    event: "Orientation Week for New Students",
+                    type: "orientation"
+                },
+                {
+                    date: "February 15, 2024",
+                    event: "Last Day to Add/Drop Courses",
+                    type: "deadline"
+                },
+                {
+                    date: "March 5-15, 2024",
+                    event: "Mid-Term Examinations",
+                    type: "exam"
+                },
+                {
+                    date: "April 1, 2024",
+                    event: "Registration for Fall Semester Begins",
+                    type: "registration"
+                },
+                {
+                    date: "May 5-20, 2024",
+                    event: "Final Examinations",
+                    type: "exam"
+                },
+                {
+                    date: "May 25, 2024",
+                    event: "Spring Semester Ends",
+                    type: "academic"
+                },
+                {
+                    date: "June 10, 2024",
+                    event: "Commencement Ceremony",
+                    type: "event"
+                }
+            ];
+            
+            const getEventTypeClass = (type) => {
+                switch(type) {
+                    case 'academic': return 'border-blue-200 bg-blue-50';
+                    case 'orientation': return 'border-green-200 bg-green-50';
+                    case 'deadline': return 'border-red-200 bg-red-50';
+                    case 'exam': return 'border-purple-200 bg-purple-50';
+                    case 'registration': return 'border-yellow-200 bg-yellow-50';
+                    case 'event': return 'border-primary-200 bg-primary-50';
+                    default: return 'border-gray-200 bg-gray-50';
+                }
+            };
+            
+            const fallEventsContainer = document.getElementById('fall-events');
+            fallEventsContainer.innerHTML = fallEvents.map(event => `
+                <div class="border ${getEventTypeClass(event.type)} rounded-md p-3">
+                    <p class="text-sm font-bold text-black">${event.date}</p>
+                    <p class="text-black">${event.event}</p>
+                </div>
+            `).join('');
+            
+            const springEventsContainer = document.getElementById('spring-events');
+            springEventsContainer.innerHTML = springEvents.map(event => `
+                <div class="border ${getEventTypeClass(event.type)} rounded-md p-3">
+                    <p class="text-sm font-bold text-black">${event.date}</p>
+                    <p class="text-black">${event.event}</p>
+                </div>
+            `).join('');
+        }
+
+        function loadFaqs() {
+            const faqs = [
+                {
+                    question: "What are the admission requirements for undergraduate programs?",
+                    answer: "Admission requirements vary by program, but generally include completion of 10+2 with minimum 60% marks in relevant subjects, entrance exam scores (JEE/NEET/CUET as applicable), and personal interview. International students may have additional requirements."
+                },
+                {
+                    question: "How can I apply for scholarships at DIT University?",
+                    answer: "DIT University offers various merit-based and need-based scholarships. You can apply through the scholarship portal on our website after receiving an admission offer. Required documents include academic transcripts, income certificates (for need-based scholarships), and a personal statement."
+                },
+                {
+                    question: "What is the credit system at DIT University?",
+                    answer: "DIT University follows a semester-based credit system. Each course is assigned a specific number of credits based on contact hours and workload. Students must complete the required credits for their program to graduate. The grading system is on a 10-point scale with letter grades from A+ to F."
+                },
+                {
+                    question: "Are there opportunities for international exchange programs?",
+                    answer: "Yes, DIT University has partnerships with universities in the US, UK, Australia, Germany, and other countries. Students can participate in semester exchange programs, summer schools, and joint research projects. Applications are typically due one semester before the intended exchange period."
+                },
+                {
+                    question: "What career services are available to students?",
+                    answer: "Our Career Development Center offers comprehensive services including resume building, interview preparation, career counseling, industry connections, and placement assistance. We organize regular campus recruitment drives with top companies across various sectors."
+                },
+                {
+                    question: "How can I access academic resources and support services?",
+                    answer: "Students have access to our central library with extensive physical and digital resources, online learning platforms, academic advisors, tutoring services, writing center, and specialized labs. Additional support services include counseling, health services, and accessibility accommodations for students with disabilities."
+                }
+            ];
+            
+            const faqsContainer = document.getElementById('faqs-container');
+            faqsContainer.innerHTML = faqs.map((faq, index) => `
+                <div class="border border-gray-200 rounded-lg" id="faq-${index}">
+                    <button 
+                        class="flex justify-between items-center w-full p-5 text-left"
+                        onclick="toggleFaq(${index})"
+                    >
+                        <h4 class="text-lg font-medium text-black">${faq.question}</h4>
+                        <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            width="20" 
+                            height="20" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            stroke-width="2" 
+                            stroke-linecap="round" 
+                            stroke-linejoin="round" 
+                            class="h-5 w-5 transition-transform"
+                            id="faq-icon-${index}"
+                        >
+                            <path d="m6 9 6 6 6-6"></path>
+                        </svg>
+                    </button>
+                    <div class="hidden px-5 pb-5" id="faq-content-${index}">
+                        <p class="text-black">${faq.answer}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

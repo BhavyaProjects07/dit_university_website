@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Academic Programs - DIT University</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        container: {
+          center: true,
+          padding: "2rem",
+          screens: {
+            "2xl": "1400px",
+          },
+        },
+        extend: {
+          colors: {
+            primary: {
+              DEFAULT: '#3b82f6',
+              foreground: '#ffffff',
+            },
+            secondary: {
+              DEFAULT: '#10b981',
+              foreground: '#ffffff',
+            },
+            accent: {
+              DEFAULT: '#8b5cf6',
+              foreground: '#ffffff',
+            },
+            muted: {
+              DEFAULT: '#f3f4f6',
+              foreground: '#6b7280',
+            },
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.5s ease-out forwards',
+            'slide-up': 'slideUp 0.5s ease-out forwards',
+            'scale-in': 'scaleIn 0.4s ease-out forwards',
+            'bounce-in': 'bounceIn 0.6s ease-out forwards',
+            'pulse-slow': 'pulse 3s infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            },
+            scaleIn: {
+              '0%': { transform: 'scale(0.9)', opacity: '0' },
+              '100%': { transform: 'scale(1)', opacity: '1' },
+            },
+            bounceIn: {
+              '0%': { transform: 'scale(0.8)', opacity: '0' },
+              '70%': { transform: 'scale(1.05)', opacity: '0.8' },
+              '100%': { transform: 'scale(1)', opacity: '1' },
+            },
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c5c5c5;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a0a0a0;
+    }
+    
+    /* Staggered animation delays */
+    .stagger-1 { animation-delay: 0.1s; }
+    .stagger-2 { animation-delay: 0.2s; }
+    .stagger-3 { animation-delay: 0.3s; }
+    .stagger-4 { animation-delay: 0.4s; }
+    .stagger-5 { animation-delay: 0.5s; }
+    .stagger-6 { animation-delay: 0.6s; }
+    
+    /* Department card hover effects */
+    .dept-card {
+      transition: all 0.3s ease;
+    }
+    .dept-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    /* Program card hover effects */
+    .program-card {
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .program-card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .program-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Parallax hero section */
+    .parallax-bg {
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    
+    /* Gradient text */
+    .gradient-text {
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      background-image: linear-gradient(to right, #3b82f6, #8b5cf6);
+    }
+    
+    /* Animated underline */
+    .animated-underline {
+      position: relative;
+    }
+    .animated-underline::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: #3b82f6;
+      transition: width 0.3s ease;
+    }
+    .animated-underline:hover::after {
+      width: 100%;
+    }
+    
+    /* Scroll reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-white antialiased">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 shadow-sm transition-colors duration-300">
+    <div class="container mx-auto px-4 flex h-16 md:h-20 items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center space-x-2">
+        <img src="/static/dit_logo2.jpeg" alt="DIT Logo" class="h-8 sm:h-10">
+        <span class="text-lg sm:text-xl md:text-2xl font-bold text-black">DIT University</span>
+      </div>
+
+      <!-- Desktop Menu -->
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="/" class="text-black hover:text-primary transition-colors animated-underline">HOME</a>
+        <a href="/ACADEMICS" class="text-black hover:text-primary transition-colors animated-underline">ACADEMICS</a>
+        <a href="/ADMISSIONS" class="text-black hover:text-primary transition-colors animated-underline">ADMISSIONS</a>
+        <a href="/PROGRAMS" class="text-primary font-medium animated-underline">PROGRAMS</a>
+        <a href="/CAMPUS LIFE" class="text-black hover:text-primary transition-colors animated-underline">CAMPUS LIFE</a>
+        <a href="/CONTACT" class="text-black hover:text-primary transition-colors animated-underline">CONTACT</a>
+      </nav>
+
+      <!-- Right Side Buttons -->
+      <div class="flex items-center space-x-4">
+        <!-- Apply Now Button -->
+        <a href="/form"><button class="hidden md:inline-flex h-9 px-4 py-2 text-sm font-medium bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
+          Apply Now
+        </button></a>
+
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" id="mobileMenuBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          <span class="sr-only">Toggle menu</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="hidden md:hidden bg-white shadow-lg rounded-b-lg absolute w-full" id="mobileMenu">
+      <div class="px-4 py-3 space-y-2">
+        <a href="/" class="block text-black hover:bg-gray-200 px-3 py-2 rounded-md">HOME</a>
+        <a href="/ACADEMICS" class="block text-black hover:bg-gray-200 px-3 py-2 rounded-md">ACADEMICS</a>
+        <a href="/ADMISSIONS" class="block text-black hover:bg-gray-200 px-3 py-2 rounded-md">ADMISSIONS</a>
+        <a href="/PROGRAMS" class="block text-primary font-medium hover:bg-gray-200 px-3 py-2 rounded-md">PROGRAMS</a>
+        <a href="/CAMPUS LIFE" class="block text-black hover:bg-gray-200 px-3 py-2 rounded-md">CAMPUS LIFE</a>
+        <a href="/CONTACT" class="block text-black hover:bg-gray-200 px-3 py-2 rounded-md">CONTACT</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1">
+    <!-- Hero Section -->
+    <section class="relative parallax-bg bg-gradient-to-r from-blue-900 to-indigo-900 text-white py-20 md:py-32">
+      <div class="absolute inset-0 bg-black/30"></div>
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-3xl mx-auto text-center">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
+            Discover Your <span class="text-primary-foreground underline decoration-primary decoration-4 underline-offset-4">Future</span> at DIT University
+          </h1>
+          <p class="text-lg md:text-xl text-gray-100 mb-8 animate-slide-up stagger-1">
+            Explore our diverse range of academic programs designed to prepare you for success in a rapidly evolving world.
+          </p>
+          <div class="flex flex-wrap justify-center gap-4 animate-slide-up stagger-2">
+            <a href="#departments" class="px-6 py-3 bg-primary hover:bg-primary/90 text-white font-medium rounded-md transition-colors">
+              Explore Programs
+            </a>
+            <a href="/form" class="px-6 py-3 bg-white hover:bg-gray-100 text-gray-900 font-medium rounded-md transition-colors">
+              How to Apply
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Decorative elements -->
+      <div class="absolute bottom-0 left-0 w-full overflow-hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" class="w-full h-16 md:h-24">
+          <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="#ffffff" opacity=".25"></path>
+          <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="#ffffff" opacity=".5"></path>
+          <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="#ffffff"></path>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-12 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+          <div class="text-center p-6 reveal">
+            <div class="text-3xl md:text-4xl font-bold text-primary mb-2">50+</div>
+            <div class="text-gray-600">Undergraduate Programs</div>
+          </div>
+          <div class="text-center p-6 reveal">
+            <div class="text-3xl md:text-4xl font-bold text-primary mb-2">35+</div>
+            <div class="text-gray-600">Postgraduate Programs</div>
+          </div>
+          <div class="text-center p-6 reveal">
+            <div class="text-3xl md:text-4xl font-bold text-primary mb-2">15+</div>
+            <div class="text-gray-600">Doctoral Programs</div>
+          </div>
+          <div class="text-center p-6 reveal">
+            <div class="text-3xl md:text-4xl font-bold text-primary mb-2">95%</div>
+            <div class="text-gray-600">Placement Rate</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Department Tabs Section -->
+    <section id="departments" class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12 reveal">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4 gradient-text">Academic Departments</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            Explore our diverse range of academic departments, each offering specialized programs designed to prepare you for success in your chosen field.
+          </p>
+        </div>
+        
+        <!-- Department Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <!-- Engineering Department -->
+          <div class="dept-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:border-primary/30 reveal">
+            <div class="h-40 bg-gradient-to-r from-blue-500 to-blue-700 relative overflow-hidden">
+              <div class="absolute inset-0 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-white/30"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              </div>
+              <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/70 to-transparent">
+                <h3 class="text-xl font-bold text-white">Engineering</h3>
+              </div>
+            </div>
+            <div class="p-6">
+              <p class="text-gray-600 mb-4">Cutting-edge programs in various engineering disciplines designed to develop technical expertise and problem-solving skills.</p>
+              <button class="dept-btn w-full py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors" data-dept="engineering">
+                View Programs
+              </button>
+            </div>
+          </div>
+          
+          <!-- Sciences Department -->
+          <div class="dept-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:border-primary/30 reveal stagger-1">
+            <div class="h-40 bg-gradient-to-r from-green-500 to-green-700 relative overflow-hidden">
+              <div class="absolute inset-0 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-white/30"><path d="M10 2v8.5a2.5 2.5 0 0 1-5 0V2"/><path d="M7 2v8.5a2.5 2.5 0 0 0 5 0V2"/><path d="M8.5 2h7"/><path d="M14 2v8.5a2.5 2.5 0 0 0 5 0V2"/><path d="M17 2v8.5a2.5 2.5 0 0 1-5 0V2"/><path d="M8.5 10H10a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2v4"/><path d="M14.5 10H16a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2v4"/><path d="M6 17h4"/><path d="M14 17h4"/></svg>
+              </div>
+              <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/70 to-transparent">
+                <h3 class="text-xl font-bold text-white">Sciences</h3>
+              </div>
+            </div>
+            <div class="p-6">
+              <p class="text-gray-600 mb-4">Comprehensive programs in natural and physical sciences that foster critical thinking and research capabilities.</p>
+              <button class="dept-btn w-full py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors" data-dept="sciences">
+                View Programs
+              </button>
+            </div>
+          </div>
+          
+          <!-- Management Department -->
+          <div class="dept-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:border-primary/30 reveal stagger-2">
+            <div class="h-40 bg-gradient-to-r from-purple-500 to-purple-700 relative overflow-hidden">
+              <div class="absolute inset-0 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-white/30"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/70 to-transparent">
+                <h3 class="text-xl font-bold text-white">Management</h3>
+              </div>
+            </div>
+            <div class="p-6">
+              <p class="text-gray-600 mb-4">Business and management programs that develop leadership skills and strategic thinking for the corporate world.</p>
+              <button class="dept-btn w-full py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors" data-dept="management">
+                View Programs
+              </button>
+            </div>
+          </div>
+        </div>
+        
+     <div id="programs-container" class="mt-12">
+    <!-- Engineering Programs -->
+    <div id="engineering-programs" class="programs-section active">
+        <div class="flex items-center mb-8 reveal">
+            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900">Engineering Programs</h3>
+        </div>
+
+        <div id = "p1"class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for program in programs %}
+          <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+              <div class="h-3 bg-primary"></div>
+              <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                      <h4 class="text-lg font-bold text-gray-900">{{ program.name }}</h4>
+                      <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">4 Years</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">A comprehensive program covering all aspects of computer science and engineering.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                      <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Programming</span>
+                      <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Algorithms</span>
+                      <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">AI/ML</span>
+                  </div>
+                  <a href="/departments/{{ program.department.id }}/programs_details/{{ program.id }}/"
+                    class="inline-block w-full text-center px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
+                      View Details
+                  </a>
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+      
+    </div>
+</div>
+
+          
+          <!-- Sciences Programs -->
+          <div id="sciences-programs" class="programs-section hidden">
+            <div class="flex items-center mb-8 reveal">
+              <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary"><path d="M10 2v8.5a2.5 2.5 0 0 1-5 0V2"/><path d="M7 2v8.5a2.5 2.5 0 0 0 5 0V2"/><path d="M8.5 2h7"/><path d="M14 2v8.5a2.5 2.5 0 0 0 5 0V2"/><path d="M17 2v8.5a2.5 2.5 0 0 1-5 0V2"/><path d="M8.5 10H10a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2v4"/><path d="M14.5 10H16a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2v4"/><path d="M6 17h4"/><path d="M14 17h4"/></svg>
+              </div>
+              <h3 class="text-2xl font-bold text-gray-900">Sciences Programs</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <!-- B.Sc in Physics -->
+              <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+                <div class="h-3 bg-secondary"></div>
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-lg font-bold text-gray-900">B.Sc in Physics</h4>
+                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">3 Years</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">Study of matter, energy, and their interactions.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Quantum Mechanics</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Electrodynamics</span>
+                  </div>
+                  <a href="program-details.html?id=4" class="inline-block w-full text-center px-4 py-2 bg-secondary text-white rounded-md hover:bg-secondary/90 transition-colors">
+                    View Details
+                  </a>
+                </div>
+              </div>
+              
+              <!-- B.Sc in Chemistry -->
+              <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+                <div class="h-3 bg-secondary"></div>
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-lg font-bold text-gray-900">B.Sc in Chemistry</h4>
+                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">3 Years</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">Study of substances, their properties, structure, and reactions.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Organic Chemistry</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Biochemistry</span>
+                  </div>
+                  <a href="program-details.html?id=5" class="inline-block w-full text-center px-4 py-2 bg-secondary text-white rounded-md hover:bg-secondary/90 transition-colors">
+                    View Details
+                  </a>
+                </div>
+              </div>
+              
+              <!-- M.Sc in Mathematics -->
+              <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+                <div class="h-3 bg-secondary"></div>
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-lg font-bold text-gray-900">M.Sc in Mathematics</h4>
+                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">2 Years</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">Advanced study of mathematical theories and applications.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Abstract Algebra</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Numerical Methods</span>
+                  </div>
+                  <a href="program-details.html?id=6" class="inline-block w-full text-center px-4 py-2 bg-secondary text-white rounded-md hover:bg-secondary/90 transition-colors">
+                    View Details
+                  </a>
+                </div>
+              </div>
+              
+              <!-- B.Sc in Biology -->
+              <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+                <div class="h-3 bg-secondary"></div>
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-lg font-bold text-gray-900">B.Sc in Biology</h4>
+                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">3 Years</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">Study of living organisms, their structure, function, and evolution.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Molecular Biology</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Genetics</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Ecology</span>
+                  </div>
+                  <a href="program-details.html?id=16" class="inline-block w-full text-center px-4 py-2 bg-secondary text-white rounded-md hover:bg-secondary/90 transition-colors">
+                    View Details
+                  </a>
+                </div>
+              </div>
+              
+              <!-- B.Sc in Biotechnology -->
+              <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+                <div class="h-3 bg-secondary"></div>
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-lg font-bold text-gray-900">B.Sc in Biotechnology</h4>
+                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">3 Years</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">Study of biological processes for industrial and medical applications.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Genetic Engineering</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Microbiology</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Biochemistry</span>
+                  </div>
+                  <a href="program-details.html?id=17" class="inline-block w-full text-center px-4 py-2 bg-secondary text-white rounded-md hover:bg-secondary/90 transition-colors">
+                    View Details
+                  </a>
+                </div>
+              </div>
+              
+              <!-- M.Sc in Environmental Science -->
+              <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+                <div class="h-3 bg-secondary"></div>
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-lg font-bold text-gray-900">M.Sc in Environmental Science</h4>
+                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">2 Years</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">Study of environmental systems, sustainability, and conservation.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Ecology</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Environmental Policy</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Conservation</span>
+                  </div>
+                  <a href="program-details.html?id=18" class="inline-block w-full text-center px-4 py-2 bg-secondary text-white rounded-md hover:bg-secondary/90 transition-colors">
+                    View Details
+                  </a>
+                </div>
+              </div>
+              
+              <!-- M.Sc in Physics -->
+              <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+                <div class="h-3 bg-secondary"></div>
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-lg font-bold text-gray-900">M.Sc in Physics</h4>
+                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">2 Years</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">Advanced study of theoretical and experimental physics.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Quantum Physics</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Astrophysics</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Condensed Matter</span>
+                  </div>
+                  <a href="program-details.html?id=19" class="inline-block w-full text-center px-4 py-2 bg-secondary text-white rounded-md hover:bg-secondary/90 transition-colors">
+                    View Details
+                  </a>
+                </div>
+              </div>
+              
+              <!-- Ph.D in Chemistry -->
+              <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+                <div class="h-3 bg-secondary"></div>
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-lg font-bold text-gray-900">Ph.D in Chemistry</h4>
+                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">3-5 Years</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">Research-focused program in advanced chemistry topics.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Research Methodology</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Advanced Synthesis</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Thesis</span>
+                  </div>
+                  <a href="program-details.html?id=20" class="inline-block w-full text-center px-4 py-2 bg-secondary text-white rounded-md hover:bg-secondary/90 transition-colors">
+                    View Details
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Management Programs -->
+          <div id="management-programs" class="programs-section hidden">
+            <div class="flex items-center mb-8 reveal">
+              <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <h3 class="text-2xl font-bold text-gray-900">Management Programs</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <!-- BBA in Business Administration -->
+              <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+                <div class="h-3 bg-accent"></div>
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-lg font-bold text-gray-900">BBA in Business Administration</h4>
+                    <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">3 Years</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">Study of business operations and management principles.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Marketing</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Finance</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">HR</span>
+                  </div>
+                  <a href="program-details.html?id=7" class="inline-block w-full text-center px-4 py-2 bg-accent text-white rounded-md hover:bg-accent/90 transition-colors">
+                    View Details
+                  </a>
+                </div>
+              </div>
+              
+              <!-- MBA in Finance -->
+              <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+                <div class="h-3 bg-accent"></div>
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-lg font-bold text-gray-900">MBA in Finance</h4>
+                    <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">2 Years</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">Advanced study of financial management and investment strategies.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Investment Analysis</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Corporate Finance</span>
+                  </div>
+                  <a href="program-details.html?id=8" class="inline-block w-full text-center px-4 py-2 bg-accent text-white rounded-md hover:bg-accent/90 transition-colors">
+                    View Details
+                  </a>
+                </div>
+              </div>
+              
+              <!-- PhD in Management -->
+              <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+                <div class="h-3 bg-accent"></div>
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-lg font-bold text-gray-900">PhD in Management</h4>
+                    <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">3-5 Years</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">Research-focused program in management and business administration.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Research Methodology</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Advanced Statistics</span>
+                  </div>
+                  <a href="program-details.html?id=9" class="inline-block w-full text-center px-4 py-2 bg-accent text-white rounded-md hover:bg-accent/90 transition-colors">
+                    View Details
+                  </a>
+                </div>
+              </div>
+              
+              <!-- MBA in Marketing -->
+              <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+                <div class="h-3 bg-accent"></div>
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-lg font-bold text-gray-900">MBA in Marketing</h4>
+                    <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">2 Years</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">Advanced study of marketing strategies, consumer behavior, and brand management.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Digital Marketing</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Brand Management</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Market Research</span>
+                  </div>
+                  <a href="program-details.html?id=21" class="inline-block w-full text-center px-4 py-2 bg-accent text-white rounded-md hover:bg-accent/90 transition-colors">
+                    View Details
+                  </a>
+                </div>
+              </div>
+              
+              <!-- MBA in Human Resource Management -->
+              <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+                <div class="h-3 bg-accent"></div>
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-lg font-bold text-gray-900">MBA in Human Resource Management</h4>
+                    <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">2 Years</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">Advanced study of HR practices, organizational behavior, and talent management.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Talent Acquisition</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Performance Management</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Labor Laws</span>
+                  </div>
+                  <a href="program-details.html?id=22" class="inline-block w-full text-center px-4 py-2 bg-accent text-white rounded-md hover:bg-accent/90 transition-colors">
+                    View Details
+                  </a>
+                </div>
+              </div>
+              
+              <!-- BBA in International Business -->
+              <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+                <div class="h-3 bg-accent"></div>
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-lg font-bold text-gray-900">BBA in International Business</h4>
+                    <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">3 Years</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">Study of global business operations, international trade, and cross-cultural management.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Global Markets</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">International Trade</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Cross-Cultural Management</span>
+                  </div>
+                  <a href="program-details.html?id=23" class="inline-block w-full text-center px-4 py-2 bg-accent text-white rounded-md hover:bg-accent/90 transition-colors">
+                    View Details
+                  </a>
+                </div>
+              </div>
+              
+              <!-- MBA in Operations Management -->
+              <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+                <div class="h-3 bg-accent"></div>
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-lg font-bold text-gray-900">MBA in Operations Management</h4>
+                    <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">2 Years</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">Advanced study of supply chain, logistics, and production management.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Supply Chain</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Quality Management</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Logistics</span>
+                  </div>
+                  <a href="program-details.html?id=24" class="inline-block w-full text-center px-4 py-2 bg-accent text-white rounded-md hover:bg-accent/90 transition-colors">
+                    View Details
+                  </a>
+                </div>
+              </div>
+              
+              <!-- Executive MBA -->
+              <div class="program-card bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:border-primary/30">
+                <div class="h-3 bg-accent"></div>
+                <div class="p-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <h4 class="text-lg font-bold text-gray-900">Executive MBA</h4>
+                    <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">18 Months</span>
+                  </div>
+                  <p class="text-gray-600 mb-4">Accelerated MBA program for working professionals with management experience.</p>
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Leadership</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Strategic Management</span>
+                    <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Business Analytics</span>
+                  </div>
+                  <a href="program-details.html?id=25" class="inline-block w-full text-center px-4 py-2 bg-accent text-white rounded-md hover:bg-accent/90 transition-colors">
+                    View Details
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Call to Action Section -->
+    <section class="py-16 bg-gradient-to-r from-primary to-blue-700 text-white">
+      <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6 reveal">Ready to Begin Your Journey?</h2>
+        <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto reveal stagger-1">
+          Take the first step towards a successful career by applying to one of our prestigious programs today.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4 reveal stagger-2">
+          <a href="/admissions" class="px-6 py-3 bg-white text-primary font-medium rounded-md hover:bg-gray-100 transition-colors">
+            Apply Now
+          </a>
+          <a href="/contact" class="px-6 py-3 bg-transparent border-2 border-white text-white font-medium rounded-md hover:bg-white/10 transition-colors">
+            Contact Us
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include 'footer.html' %}
+
+  <script>
+    // Mobile menu toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      
+      if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', function() {
+          mobileMenu.classList.toggle('hidden');
+        });
+      }
+      
+      // Department tabs
+      const deptButtons = document.querySelectorAll('.dept-btn');
+      const programSections = document.querySelectorAll('.programs-section');
+      
+      deptButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const dept = this.getAttribute('data-dept');
+          
+          // Hide all program sections
+          programSections.forEach(section => {
+            section.classList.add('hidden');
+          });
+          
+          // Show selected department programs
+          const selectedSection = document.getElementById(`${dept}-programs`);
+          if (selectedSection) {
+            selectedSection.classList.remove('hidden');
+            
+            // Animate program cards
+            const programCards = selectedSection.querySelectorAll('.program-card');
+            programCards.forEach((card, index) => {
+              setTimeout(() => {
+                card.classList.add('show');
+              }, 100 * index);
+            });
+          }
+        });
+      });
+      
+      // Show engineering programs by default
+      const engineeringPrograms = document.getElementById('engineering-programs');
+      if (engineeringPrograms) {
+        const programCards = engineeringPrograms.querySelectorAll('.program-card');
+        programCards.forEach((card, index) => {
+          setTimeout(() => {
+            card.classList.add('show');
+          }, 100 * index);
+        });
+      }
+      
+      // Scroll reveal animation
+      function revealOnScroll() {
+        const reveals = document.querySelectorAll('.reveal');
+        
+        reveals.forEach(element => {
+          const windowHeight = window.innerHeight;
+          const elementTop = element.getBoundingClientRect().top;
+          const elementVisible = 150;
+          
+          if (elementTop < windowHeight - elementVisible) {
+            element.classList.add('active');
+          }
+        });
+      }
+      
+      window.addEventListener('scroll', revealOnScroll);
+      revealOnScroll(); // Initial check on page load
+    });
+  </script>
+</body>
+</html>

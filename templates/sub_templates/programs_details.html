@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ program.name }} - Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            light: '#f5e7c1',
+                            DEFAULT: '#d4af37',
+                            dark: '#b8860b',
+                        },
+                        charcoal: '#333333',
+                        offwhite: '#f8f8f8',
+                    },
+                    fontFamily: {
+                        'playfair': ['"Playfair Display"', 'serif'],
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, #f5e7c1 0%, #d4af37 50%, #b8860b 100%);
+        }
+        .syllabus-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .syllabus-item:hover {
+            transform: translateX(5px);
+        }
+        .syllabus-item::before {
+            content: "";
+            position: absolute;
+            left: -1.5rem;
+            top: 0.5rem;
+            width: 8px;
+            height: 8px;
+            background-color: #d4af37;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-offwhite text-charcoal min-h-screen">
+    <!-- Navigation -->
+    {% include 'new.html' %}
+
+    <!-- Hero Banner -->
+    <div class="relative h-80 overflow-hidden">
+        <div class="absolute inset-0 bg-charcoal opacity-80"></div>
+        <div class="absolute inset-0 gold-gradient opacity-20"></div>
+        <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white playfair mb-4">{{ program.name }}</h1>
+            <div class="flex flex-wrap justify-center gap-3">
+                <span class="px-4 py-2 bg-gold text-charcoal rounded-full text-sm font-medium">{{ program.duration }}</span>
+                <span class="px-4 py-2 bg-white text-charcoal rounded-full text-sm font-medium">{{ program.level }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12">
+        <div class="bg-white rounded-xl shadow-xl overflow-hidden mb-12 transform transition-all duration-300 hover:shadow-2xl">
+            <!-- Program Overview -->
+            <div class="p-8 border-b border-gray-200">
+                <h2 class="text-3xl font-bold playfair text-charcoal mb-6 flex items-center">
+                    <span class="w-1.5 h-8 bg-gold-dark rounded mr-3"></span>
+                    Program Overview
+                </h2>
+                <p class="text-gray-700 leading-relaxed">{{ program.description }}</p>
+            </div>
+
+            <!-- Syllabus -->
+            <div class="p-8 bg-offwhite">
+                <h2 class="text-3xl font-bold playfair text-charcoal mb-6 flex items-center">
+                    <span class="w-1.5 h-8 bg-gold-dark rounded mr-3"></span>
+                    Syllabus
+                </h2>
+            
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {% for topic in program.syllabus.splitlines %}
+                            <div class="flex items-start gap-3 bg-gray-50 p-3 rounded-md shadow-sm">
+                                <span class="w-2.5 h-2.5 bg-primary rounded-full mt-1"></span>
+                                <span class="text-charcoal font-medium">{{ topic }}</span>
+                            </div>
+                        {% empty %}
+                            <div class="text-gray-500 italic">No syllabus available for this program.</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+
+            <!-- Analytics -->
+            <div class="p-8 border-t border-gray-200">
+                <h2 class="text-3xl font-bold playfair text-charcoal mb-6 flex items-center">
+                    <span class="w-1.5 h-8 bg-gold-dark rounded mr-3"></span>
+                    Program Analytics
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-center mb-4 playfair">Student Enrollment</h3>
+                        <div class="h-64">
+                            <canvas id="enrollmentChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold text-center mb-4 playfair">Completion Rate</h3>
+                        <div class="h-64">
+                            <canvas id="completionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Features -->
+            <div class="p-8 bg-offwhite">
+                <h2 class="text-3xl font-bold playfair text-charcoal mb-6 flex items-center">
+                    <span class="w-1.5 h-8 bg-gold-dark rounded mr-3"></span>
+                    Key Features
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gold-light flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gold-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 playfair">Expert Instructors</h3>
+                        <p class="text-gray-600">Learn from industry professionals with years of experience</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gold-light flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gold-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 playfair">Certification</h3>
+                        <p class="text-gray-600">Receive industry-recognized certification upon completion</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gold-light flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gold-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 playfair">Hands-on Projects</h3>
+                        <p class="text-gray-600">Apply your knowledge with real-world projects</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="p-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <a href="/PROGRAMS" class="px-6 py-3 border-2 border-charcoal text-charcoal rounded-lg hover:bg-charcoal hover:text-white transition duration-300 text-center w-full md:w-auto">
+                    Back to Programs
+                </a>
+                <a href="/form" class="px-6 py-3 bg-gold text-charcoal font-semibold rounded-lg hover:bg-gold-dark transition duration-300 text-center w-full md:w-auto">
+                    Enroll Now
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    {% include "footer.html" %}
+
+    <script>
+        // Sample data for charts - in a real application, this would come from your Django backend
+        document.addEventListener('DOMContentLoaded', function() {
+            // Enrollment Chart
+            const enrollmentCtx = document.getElementById('enrollmentChart').getContext('2d');
+            const enrollmentChart = new Chart(enrollmentCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Enrollments',
+                        data: [65, 78, 90, 82, 96, 110],
+                        backgroundColor: 'rgba(212, 175, 55, 0.2)',
+                        borderColor: '#d4af37',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        pointBackgroundColor: '#d4af37',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // Completion Chart
+            const completionCtx = document.getElementById('completionChart').getContext('2d');
+            const completionChart = new Chart(completionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Completed', 'In Progress', 'Dropped'],
+                    datasets: [{
+                        data: [68, 25, 7],
+                        backgroundColor: [
+                            '#d4af37',
+                            '#333333',
+                            '#f5e7c1'
+                        ],
+                        borderColor: [
+                            '#b8860b',
+                            '#222222',
+                            '#e5d7b1'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: 'Poppins'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

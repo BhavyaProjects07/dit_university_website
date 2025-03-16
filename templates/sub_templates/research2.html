@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renewable Energy and Integration Systems | DIT University Research</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10B981',
+                        secondary: '#F59E0B',
+                        dark: '#1F2937',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(90deg, #10B981 0%, #059669 100%);
+        }
+        .research-icon {
+            transition: all 0.3s ease;
+        }
+        .research-icon:hover {
+            transform: translateY(-5px);
+        }
+        .energy-system {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            overflow: hidden;
+            background-color: #f8fafc;
+        }
+        .energy-source {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+            transition: all 0.5s ease;
+            z-index: 10;
+        }
+        .energy-source:hover {
+            transform: scale(1.1);
+        }
+        .energy-flow {
+            position: absolute;
+            height: 4px;
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.8) 0%, rgba(5, 150, 105, 0.8) 100%);
+            transform-origin: left;
+            z-index: 5;
+        }
+        .energy-pulse {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.8);
+            z-index: 6;
+            animation: flowPulse 3s infinite linear;
+        }
+        @keyframes flowPulse {
+            0% {
+                left: 0;
+                opacity: 1;
+            }
+            100% {
+                left: calc(100% - 12px);
+                opacity: 0.7;
+            }
+        }
+        .grid-component {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 10px;
+            background-color: #f1f5f9;
+            border: 2px solid #10B981;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .grid-component:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .grid-component i {
+            font-size: 32px;
+            color: #10B981;
+            margin-bottom: 8px;
+        }
+        .grid-component span {
+            font-size: 14px;
+            font-weight: 500;
+            color: #334155;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-LGx43Jxw93ca0cKa6XHRyQqRmAwYvG.png" alt="DIT University Logo" class="h-12">
+                <h1 class="ml-4 text-xl font-bold text-dark hidden md:block">DIT University Research</h1>
+            </div>
+            <nav class="hidden md:flex space-x-6">
+                <a href="#" class="text-gray-600 hover:text-primary transition">Home</a>
+                <a href="#" class="text-gray-600 hover:text-primary transition">Research Areas</a>
+                <a href="#" class="text-gray-600 hover:text-primary transition">Publications</a>
+                <a href="#" class="text-gray-600 hover:text-primary transition">Team</a>
+                <a href="#" class="text-gray-600 hover:text-primary transition">Contact</a>
+            </nav>
+            <button class="md:hidden text-gray-600 focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-20">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0" data-aos="fade-right" data-aos-duration="1000">
+                    <span class="bg-white/20 text-white px-4 py-1 rounded-full text-sm">Sustainable Energy</span>
+                    <h1 class="text-4xl md:text-5xl font-bold mt-4 mb-6">Renewable Energy and Integration Systems</h1>
+                    <p class="text-lg mb-8">Pioneering research in renewable energy technologies and their seamless integration into existing power grids to create sustainable, reliable, and efficient energy systems.</p>
+                    <div class="flex space-x-4">
+                        <a href="#research-details" class="bg-white text-primary px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition">Explore Research</a>
+                        <a href="#team" class="bg-transparent border border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition">Meet the Team</a>
+                    </div>
+                </div>
+                <div class="md:w-1/2" data-aos="fade-left" data-aos-duration="1000">
+                    <img src="/placeholder.svg?height=400&width=600" alt="Renewable Energy Systems Visualization" class="rounded-lg shadow-xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Overview -->
+    <section id="research-details" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12" data-aos="fade-up">Research Overview</h2>
+            
+            <div class="mb-12" data-aos="fade-up" data-aos-delay="100">
+                <h3 class="text-2xl font-semibold mb-4 text-primary">Project Description</h3>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    Our Renewable Energy and Integration Systems research program at DIT University is dedicated to developing innovative technologies and methodologies for harnessing renewable energy sources and integrating them effectively into existing power infrastructure. As the world transitions toward sustainable energy systems, our work addresses the critical challenges of reliability, efficiency, and scalability in renewable energy deployment.
+                </p>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    We focus on a comprehensive approach that spans the entire renewable energy ecosystem—from advanced solar and wind energy capture technologies to smart grid integration, energy storage solutions, and demand-side management. Our multidisciplinary team combines expertise in electrical engineering, materials science, computer science, and environmental engineering to create holistic solutions for the energy challenges of the 21st century.
+                </p>
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    Through partnerships with industry leaders, government agencies, and international research institutions, we're working to accelerate the global energy transition by making renewable energy systems more accessible, affordable, and reliable for communities across India and beyond.
+                </p>
+            </div>
+
+            <!-- Interactive Energy System Visualization -->
+            <div class="mb-16 bg-gray-50 p-8 rounded-xl" data-aos="fade-up">
+                <h3 class="text-2xl font-semibold mb-6 text-primary text-center">Renewable Energy Integration System</h3>
+                <div class="energy-system" id="energySystemVisualization">
+                    <!-- Energy system will be created by JavaScript -->
+                </div>
+                <div class="text-center mt-6 text-gray-600">
+                    <p>Interactive visualization of renewable energy integration into the power grid</p>
+                    <button id="animateEnergyFlow" class="mt-4 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition">
+                        Simulate Energy Flow
+                    </button>
+                </div>
+            </div>
+
+            <!-- Key Research Areas -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition" data-aos="fade-up" data-aos-delay="150">
+                    <div class="research-icon bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-solar-panel text-2xl text-primary"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold mb-3">Advanced Solar Technologies</h4>
+                    <p class="text-gray-600">Developing next-generation photovoltaic materials and systems with improved efficiency, durability, and cost-effectiveness for diverse environmental conditions.</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition" data-aos="fade-up" data-aos-delay="200">
+                    <div class="research-icon bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-battery-full text-2xl text-primary"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold mb-3">Energy Storage Solutions</h4>
+                    <p class="text-gray-600">Researching innovative energy storage technologies including advanced batteries, thermal storage, and hybrid systems to address intermittency challenges.</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition" data-aos="fade-up" data-aos-delay="250">
+                    <div class="research-icon bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-network-wired text-2xl text-primary"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold mb-3">Smart Grid Integration</h4>
+                    <p class="text-gray-600">Creating intelligent control systems and grid management technologies that enable high penetration of renewable energy while maintaining stability and reliability.</p>
+                </div>
+            </div>
+
+            <!-- Methodology -->
+            <div class="mb-16" data-aos="fade-up">
+                <h3 class="text-2xl font-semibold mb-4 text-primary">Research Methodology</h3>
+                <div class="bg-gray-50 p-8 rounded-xl">
+                    <ol class="list-decimal pl-5 space-y-4">
+                        <li class="text-gray-700">
+                            <span class="font-medium">Materials Research & Development:</span> Investigating novel materials and structures for improved energy capture, conversion, and storage, with a focus on sustainability and scalability.
+                        </li>
+                        <li class="text-gray-700">
+                            <span class="font-medium">System Modeling & Simulation:</span> Creating comprehensive models of renewable energy systems and their integration with existing infrastructure to predict performance and optimize designs.
+                        </li>
+                        <li class="text-gray-700">
+                            <span class="font-medium">Prototype Development & Testing:</span> Building and testing scaled prototypes of renewable energy technologies and integration systems under controlled and real-world conditions.
+                        </li>
+                        <li class="text-gray-700">
+                            <span class="font-medium">Field Deployment & Monitoring:</span> Implementing pilot projects in diverse settings to gather operational data and validate performance in actual usage scenarios.
+                        </li>
+                        <li class="text-gray-700">
+                            <span class="font-medium">Techno-Economic Analysis:</span> Conducting comprehensive assessments of technological, economic, and environmental factors to ensure practical viability and market relevance.
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Current Projects -->
+            <div class="mb-16" data-aos="fade-up">
+                <h3 class="text-2xl font-semibold mb-6 text-primary">Current Projects</h3>
+                
+                <div class="space-y-6">
+                    <div class="border-l-4 border-primary pl-6 py-2">
+                        <h4 class="text-xl font-medium mb-2">High-Efficiency Perovskite-Silicon Tandem Solar Cells</h4>
+                        <p class="text-gray-600 mb-3">Developing tandem solar cell technology that combines perovskite and silicon layers to achieve higher efficiency than conventional silicon cells while maintaining long-term stability and cost-effectiveness.</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <span class="mr-4"><i class="far fa-calendar-alt mr-1"></i> 2022-2025</span>
+                            <span><i class="fas fa-user-circle mr-1"></i> Lead: Dr. Sunita Patel</span>
+                        </div>
+                    </div>
+                    
+                    <div class="border-l-4 border-primary pl-6 py-2">
+                        <h4 class="text-xl font-medium mb-2">Grid-Scale Vanadium Redox Flow Battery System</h4>
+                        <p class="text-gray-600 mb-3">Designing and optimizing large-scale vanadium redox flow battery systems for grid energy storage, with a focus on improving energy density, cycle life, and reducing manufacturing costs.</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <span class="mr-4"><i class="far fa-calendar-alt mr-1"></i> 2023-2026</span>
+                            <span><i class="fas fa-user-circle mr-1"></i> Lead: Dr. Rajesh Verma</span>
+                        </div>
+                    </div>
+                    
+                    <div class="border-l-4 border-primary pl-6 py-2">
+                        <h4 class="text-xl font-medium mb-2">AI-Powered Microgrid Management System</h4>
+                        <p class="text-gray-600 mb-3">Developing an intelligent control system that uses machine learning to optimize the operation of microgrids with high renewable penetration, balancing generation, storage, and demand in real-time.</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <span class="mr-4"><i class="far fa-calendar-alt mr-1"></i> 2021-2024</span>
+                            <span><i class="fas fa-user-circle mr-1"></i> Lead: Dr. Anand Kumar, Dr. Sunita Patel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Publications -->
+            <div class="mb-16" data-aos="fade-up">
+                <h3 class="text-2xl font-semibold mb-6 text-primary">Key Publications</h3>
+                
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition cursor-pointer">
+                        <h4 class="text-lg font-medium mb-2">Stability Enhancement of Perovskite-Silicon Tandem Solar Cells Through Interface Engineering</h4>
+                        <p class="text-gray-600 mb-3">Patel, S., Kumar, A., & Gupta, M. (2023). Nature Energy.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500"><i class="fas fa-quote-left mr-1"></i> Citations: 38</span>
+                            <a href="#" class="text-primary hover:underline">View Paper <i class="fas fa-external-link-alt ml-1"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition cursor-pointer">
+                        <h4 class="text-lg font-medium mb-2">Optimization of Electrolyte Composition for Enhanced Performance of Vanadium Redox Flow Batteries</h4>
+                        <p class="text-gray-600 mb-3">Verma, R., Patel, S., & Sharma, P. (2022). Journal of Energy Storage.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500"><i class="fas fa-quote-left mr-1"></i> Citations: 26</span>
+                            <a href="#" class="text-primary hover:underline">View Paper <i class="fas fa-external-link-alt ml-1"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition cursor-pointer">
+                        <h4 class="text-lg font-medium mb-2">Reinforcement Learning for Optimal Dispatch in Renewable-Powered Microgrids</h4>
+                        <p class="text-gray-600 mb-3">Kumar, A., Patel, S., & Verma, R. (2021). IEEE Transactions on Smart Grid.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500"><i class="fas fa-quote-left mr-1"></i> Citations: 42</span>
+                            <a href="#" class="text-primary hover:underline">View Paper <i class="fas fa-external-link-alt ml-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Team -->
+    <section id="team" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12" data-aos="fade-up">Research Team</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition text-center" data-aos="fade-up" data-aos-delay="100">
+                    <img src="/placeholder.svg?height=150&width=150" alt="Dr. Sunita Patel" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                    <h4 class="text-xl font-semibold mb-1">Dr. Sunita Patel</h4>
+                    <p class="text-primary mb-3">Principal Investigator</p>
+                    <p class="text-gray-600 mb-4">Expert in photovoltaic materials and devices with a focus on next-generation solar cell technologies and their integration into energy systems.</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-gray-400 hover:text-blue-500"><i class="fab fa-linkedin text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-red-500"><i class="fas fa-globe text-xl"></i></a>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition text-center" data-aos="fade-up" data-aos-delay="200">
+                    <img src="/placeholder.svg?height=150&width=150" alt="Dr. Rajesh Verma" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                    <h4 class="text-xl font-semibold mb-1">Dr. Rajesh Verma</h4>
+                    <p class="text-primary mb-3">Co-Investigator</p>
+                    <p class="text-gray-600 mb-4">Specializing in energy storage technologies, electrochemical systems, and grid integration of renewable energy sources.</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-gray-400 hover:text-blue-500"><i class="fab fa-linkedin text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-red-500"><i class="fas fa-globe text-xl"></i></a>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition text-center" data-aos="fade-up" data-aos-delay="300">
+                    <img src="/placeholder.svg?height=150&width=150" alt="Dr. Anand Kumar" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                    <h4 class="text-xl font-semibold mb-1">Dr. Anand Kumar</h4>
+                    <p class="text-primary mb-3">Research Associate</p>
+                    <p class="text-gray-600 mb-4">Expert in smart grid technologies, power systems engineering, and artificial intelligence applications for energy management.</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-gray-400 hover:text-blue-500"><i class="fab fa-linkedin text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-red-500"><i class="fas fa-globe text-xl"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Collaboration -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12" data-aos="fade-up">Contact & Collaboration</h2>
+            
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="md:w-1/2" data-aos="fade-right">
+                    <h3 class="text-2xl font-semibold mb-4 text-primary">Interested in Collaboration?</h3>
+                    <p class="text-gray-700 mb-6">
+                        We're actively seeking research partners, industry collaborators, and funding opportunities to advance our work in renewable energy and integration systems. If you're interested in working with us, please get in touch.
+                    </p>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-start">
+                            <div class="bg-primary/10 p-3 rounded-full mr-4">
+                                <i class="fas fa-envelope text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Email</h4>
+                                <p class="text-gray-600">renewable.research@dit.edu</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-primary/10 p-3 rounded-full mr-4">
+                                <i class="fas fa-phone text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Phone</h4>
+                                <p class="text-gray-600">+91 135 3000 XXX</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-primary/10 p-3 rounded-full mr-4">
+                                <i class="fas fa-map-marker-alt text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Address</h4>
+                                <p class="text-gray-600">Renewable Energy Research Lab, DIT University, Dehradun, Uttarakhand, India</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2" data-aos="fade-left">
+                    <form class="bg-gray-50 p-8 rounded-xl shadow-sm">
+                        <h3 class="text-2xl font-semibold mb-6 text-primary">Get in Touch</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label for="name" class="block text-gray-700 mb-2">Name</label>
+                                <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                            </div>
+                            
+                            <div>
+                                <label for="email" class="block text-gray-700 mb-2">Email</label>
+                                <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="subject" class="block text-gray-700 mb-2">Subject</label>
+                            <input type="text" id="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 mb-2">Message</label>
+                            <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition w-full">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-LGx43Jxw93ca0cKa6XHRyQqRmAwYvG.png" alt="DIT University Logo" class="h-12 mb-4">
+                    <p class="text-gray-400 mb-4">Advancing research and innovation in renewable energy technologies and integration systems for a sustainable future.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Home</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Research Areas</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Publications</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Team</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Research Areas</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Smart Cities</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Renewable Energy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Blockchain Technology</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">IoT Applications</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">AI & Machine Learning</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3"></i>
+                            <span>DIT University, Mussoorie Diversion Road, Dehradun, Uttarakhand, 248009</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-3"></i>
+                            <span>+91 135 3000 XXX</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3"></i>
+                            <span>research@dit.edu</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-10 pt-6 text-center text-gray-500">
+                <p>&copy; 2025 DIT University Research. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        // Initialize AOS animation library
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+
+        // Mobile menu toggle
+        document.querySelector('button').addEventListener('click', function() {
+            const nav = document.querySelector('nav');
+            nav.classList.toggle('hidden');
+            nav.classList.toggle('flex');
+            nav.classList.toggle('flex-col');
+            nav.classList.toggle('absolute');
+            nav.classList.toggle('top-16');
+            nav.classList.toggle('right-4');
+            nav.classList.toggle('bg-white');
+            nav.classList.toggle('p-4');
+            nav.classList.toggle('rounded-lg');
+            nav.classList.toggle('shadow-lg');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Create energy system visualization
+        function createEnergySystem() {
+            const container = document.getElementById('energySystemVisualization');
+            if (!container) return;
+            
+            // Clear previous visualization
+            container.innerHTML = '';
+            
+            // Create energy sources
+            const sources = [
+                { type: 'solar', icon: 'fa-solar-panel', color: '#F59E0B', x: '15%', y: '20%' },
+                { type: 'wind', icon: 'fa-wind', color: '#3B82F6', x: '15%', y: '70%' },
+                { type: 'hydro', icon: 'fa-water', color: '#0EA5E9', x: '15%', y: '45%' }
+            ];
+            
+            // Create grid components
+            const gridComponents = [
+                { type: 'storage', icon: 'fa-battery-full', label: 'Energy Storage', x: '50%', y: '30%' },
+                { type: 'control', icon: 'fa-microchip', label: 'Smart Control', x: '50%', y: '60%' },
+                { type: 'grid', icon: 'fa-plug', label: 'Power Grid', x: '80%', y: '45%' }
+            ];
+            
+            // Add energy sources
+            sources.forEach(source => {
+                const element = document.createElement('div');
+                element.className = 'energy-source';
+                element.style.backgroundColor = source.color;
+                element.style.left = source.x;
+                element.style.top = source.y;
+                element.innerHTML = `<i class="fas ${source.icon}"></i>`;
+                element.setAttribute('data-type', source.type);
+                container.appendChild(element);
+            });
+            
+            // Add grid components
+            gridComponents.forEach(component => {
+                const element = document.createElement('div');
+                element.className = 'grid-component';
+                element.style.left = component.x;
+                element.style.top = component.y;
+                element.innerHTML = `
+                    <i class="fas ${component.icon}"></i>
+                    <span>${component.label}</span>
+                `;
+                element.setAttribute('data-type', component.type);
+                container.appendChild(element);
+            });
+            
+            // Create connections between sources and components
+            sources.forEach(source => {
+                // Connect to storage
+                createConnection(
+                    parseFloat(source.x), 
+                    parseFloat(source.y), 
+                    parseFloat(gridComponents[0].x), 
+                    parseFloat(gridComponents[0].y),
+                    container
+                );
+                
+                // Connect to control
+                createConnection(
+                    parseFloat(source.x), 
+                    parseFloat(source.y), 
+                    parseFloat(gridComponents[1].x), 
+                    parseFloat(gridComponents[1].y),
+                    container
+                );
+            });
+            
+            // Connect storage and control to grid
+            gridComponents.slice(0, 2).forEach(component => {
+                createConnection(
+                    parseFloat(component.x), 
+                    parseFloat(component.y), 
+                    parseFloat(gridComponents[2].x), 
+                    parseFloat(gridComponents[2].y),
+                    container
+                );
+            });
+        }
+        
+        // Create connection between two points
+        function createConnection(x1, y1, x2, y2, container) {
+            const containerRect = container.getBoundingClientRect();
+            
+            // Convert percentages to pixels
+            x1 = (containerRect.width * x1) / 100;
+            y1 = (containerRect.height * y1) / 100;
+            x2 = (containerRect.width * x2) / 100;
+            y2 = (containerRect.height * y2) / 100;
+            
+            // Calculate length and angle
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const length = Math.sqrt(dx * dx + dy * dy);
+            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+            
+            // Create connection
+            const connection = document.createElement('div');
+            connection.className = 'energy-flow';
+            connection.style.width = `${length}px`;
+            connection.style.left = `${x1}px`;
+            connection.style.top = `${y1}px`;
+            connection.style.transform = `rotate(${angle}deg)`;
+            
+            container.appendChild(connection);
+            
+            return connection;
+        }
+        
+        // Animate energy flow
+        function animateEnergyFlow() {
+            const connections = document.querySelectorAll('.energy-flow');
+            if (!connections.length) return;
+            
+            // Remove existing pulses
+            document.querySelectorAll('.energy-pulse').forEach(pulse => pulse.remove());
+            
+            // Add pulse to each connection
+            connections.forEach(connection => {
+                const pulse = document.createElement('div');
+                pulse.className = 'energy-pulse';
+                
+                // Set the same position as the connection
+                pulse.style.left = connection.style.left;
+                pulse.style.top = connection.style.top;
+                
+                // Apply the same rotation
+                pulse.style.transform = connection.style.transform;
+                
+                // Add to container
+                connection.parentNode.appendChild(pulse);
+                
+                // Reset animation
+                pulse.style.animation = 'none';
+                pulse.offsetHeight; // Trigger reflow
+                pulse.style.animation = 'flowPulse 3s infinite linear';
+            });
+        }
+        
+        // Initialize energy system visualization
+        window.addEventListener('load', createEnergySystem);
+        window.addEventListener('resize', createEnergySystem);
+        
+        // Add event listener for animation button
+        const animateButton = document.getElementById('animateEnergyFlow');
+        if (animateButton) {
+            animateButton.addEventListener('click', animateEnergyFlow);
+        }
+
+        // Animation for research icons
+        const researchIcons = document.querySelectorAll('.research-icon');
+        researchIcons.forEach(icon => {
+            icon.addEventListener('mouseenter', () => {
+                icon.classList.add('animate-bounce');
+                setTimeout(() => {
+                    icon.classList.remove('animate-bounce');
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>

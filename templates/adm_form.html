@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIT University - Admission Form</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#3b82f6',
+                            foreground: '#ffffff',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* CSS Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInFromRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        
+        .section-animate {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        .section-animate:nth-child(1) { animation-delay: 0.1s; }
+        .section-animate:nth-child(2) { animation-delay: 0.2s; }
+        .section-animate:nth-child(3) { animation-delay: 0.3s; }
+        .section-animate:nth-child(4) { animation-delay: 0.4s; }
+        .section-animate:nth-child(5) { animation-delay: 0.5s; }
+        .section-animate:nth-child(6) { animation-delay: 0.6s; }
+        .section-animate:nth-child(7) { animation-delay: 0.7s; }
+        
+        .input-focus-effect:focus {
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .popup {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #28a745; /* Green background for success */
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        display: block;
+        z-index: 1000;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .error {
+        background: #dc3545; /* Red for errors */
+    }
+
+
+        
+        .file-drop-zone {
+            transition: all 0.3s ease;
+        }
+        
+        .file-drop-zone:hover {
+            background-color: rgba(59, 130, 246, 0.05);
+            border-color: #3b82f6;
+        }
+        
+        .submit-btn {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .progress-bar-animate {
+            width: 100%;
+            background: linear-gradient(to right, #3b82f6 0%, #60a5fa 20%, #3b82f6 40%, #3b82f6 100%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite linear;
+        }
+        
+        .social-icon:hover {
+            animation: bounce 0.5s ease infinite;
+        }
+        
+        /* Form section animations */
+        .form-section {
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        .form-section:nth-child(1) { animation-delay: 0.1s; }
+        .form-section:nth-child(2) { animation-delay: 0.3s; }
+        .form-section:nth-child(3) { animation-delay: 0.5s; }
+        .form-section:nth-child(4) { animation-delay: 0.7s; }
+        .form-section:nth-child(5) { animation-delay: 0.9s; }
+        .form-section:nth-child(6) { animation-delay: 1.1s; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    
+
+
+
+    <nav class="fixed w-full z-50 bg-white shadow-lg transition-colors duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16 md:h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <img src="/static/dit_logo2.jpeg" alt="DIT Logo" class="h-8 sm:h-10">
+                    <span class="text-lg sm:text-xl md:text-2xl font-bold text-black">DIT University</span>
+                </div>
+    
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-black hover:text-gray-700 transition-colors">HOME</a>
+                    <div class="relative group">
+                        <a href="/ACADEMICS" class="text-black hover:text-gray-700 transition-colors">ACADEMICS</a>
+                        <div class="absolute hidden group-hover:block w-48 bg-white shadow-lg rounded-md mt-2">
+                            <a href="#" class="block px-4 py-2 text-black hover:bg-gray-200">Engineering</a>
+                            <a href="#" class="block px-4 py-2 text-black hover:bg-gray-200">Management</a>
+                            <a href="#" class="block px-4 py-2 text-black hover:bg-gray-200">Sciences</a>
+                        </div>
+                    </div>
+                    <div class="relative group">
+                        <a href="/ADMISSIONS" class="text-black hover:text-gray-700 transition-colors">ADMISSIONS</a>
+                        <div class="absolute hidden group-hover:block w-48 bg-white shadow-lg rounded-md mt-2">
+                            <a href="#" class="block px-4 py-2 text-black hover:bg-gray-200">Apply Now</a>
+                            <a href="#" class="block px-4 py-2 text-black hover:bg-gray-200">Scholarships</a>
+                            <a href="#" class="block px-4 py-2 text-black hover:bg-gray-200">Fee Structure</a>
+                        </div>
+                    </div>
+                    <a href="/PROGRAMS" class="text-black hover:text-gray-700 transition-colors">PROGRAMS</a>
+                    <a href="/CAMPUS LIFE" class="text-black hover:text-gray-700 transition-colors">CAMPUS LIFE</a>
+                    <a href="/CONTACT" class="text-black hover:text-gray-700 transition-colors">CONTACT</a>
+                </div>
+            
+    
+                <div class="flex items-center space-x-2 md:space-x-4">
+                    <!-- Login/Signup Button - Hidden on small mobile -->
+                    <div class="hidden sm:block">
+                        {% if user.is_authenticated %}
+                        <span class="text-sm md:text-lg font-medium text-black truncate max-w-[100px] md:max-w-full">Welcome, {{ user.username }} 👋</span>
+                        <a href="{% url 'logout' %}" class="bg-red-500 text-white px-3 py-1 md:px-4 md:py-2 rounded text-sm">Logout</a>
+                        {% else %}
+                        <a href="{% url 'auth' %}" 
+                            class="bg-gradient-to-r from-teal-500 to-blue-500 text-white px-6 py-3 md:px-8 md:py-4 rounded-lg text-lg font-bold shadow-lg transform transition duration-300 hover:scale-105 hover:from-teal-600 hover:to-blue-600">
+                            Login / Signup
+                        </a>
+                        {% endif %}
+                    </div>
+    
+                    <!-- Mobile Menu Button -->
+                    <button class="md:hidden text-black p-1" id="mobileMenuBtn">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+    
+            <!-- Mobile Menu -->
+            <div class="md:hidden hidden bg-white rounded-b-lg shadow-lg" id="mobileMenu">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="#" class="block px-3 py-2 text-black hover:bg-gray-200 rounded-md">HOME</a>
+                    <a href="#" class="block px-3 py-2 text-black hover:bg-gray-200 rounded-md">ACADEMICS</a>
+                    <a href="#" class="block px-3 py-2 text-black hover:bg-gray-200 rounded-md">ADMISSIONS</a>
+                    <a href="#" class="block px-3 py-2 text-black hover:bg-gray-200 rounded-md">PROGRAMS</a>
+                    <a href="#" class="block px-3 py-2 text-black hover:bg-gray-200 rounded-md">CAMPUS LIFE</a>
+                    <a href="#" class="block px-3 py-2 text-black hover:bg-gray-200 rounded-md">CONTACT</a>
+                    <!-- Login/Signup Button for very small screens -->
+                    <div class="sm:hidden pt-2 pb-1">
+                        {% if user.is_authenticated %}
+                        <span class="block px-3 py-1 text-black font-medium">Welcome, {{ user.username }} 👋</span>
+                        <a href="{% url 'logout' %}" class="block mt-1 mx-3 bg-red-500 text-white px-4 py-2 rounded text-center">Logout</a>
+                        {% else %}
+                        <a href="{% url 'auth' %}" class="block mx-3 bg-teal-500 text-white px-4 py-2 rounded text-center">Login / Signup</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+
+        <!-- Form Header -->
+        <div class="max-w-3xl mx-auto mb-8 text-center form-section">
+            <h1 class="text-3xl font-bold mb-4">Admission Application Form</h1>
+            <p class="text-gray-600">Please fill out the form below accurately. All fields marked with * are required.</p>
+        </div>
+
+        <!-- Progress Bar (Static) -->
+        <div class="max-w-3xl mx-auto mb-8 form-section">
+            <div class="flex justify-between mb-2">
+                <span class="text-sm font-medium text-primary">Form Progress</span>
+                <span class="text-sm font-medium text-primary">Complete all required fields</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-primary h-2.5 rounded-full progress-bar-animate" style="width: 10%"></div>
+            </div>
+        </div>
+
+        <!-- Application Form -->
+        <form method="post" enctype="multipart/form-data" id="admission-form" class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-6 space-y-8" action="" method="POST">
+            <!-- Personal Information -->
+            {% csrf_token %}
+            <div class="space-y-6 form-section">
+                <h2 class="text-xl font-semibold border-b pb-2">Personal Information</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="first-name" class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                        <input 
+                            type="text" 
+                            id="first_name" 
+                            name="first_name" 
+                            required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary input-focus-effect"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label for="last-name" class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                        <input 
+                            type="text" 
+                            id="last_name" 
+                            name="last_name" 
+                            required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary input-focus-effect"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label for="dob" class="block text-sm font-medium text-gray-700 mb-1">Date of Birth *</label>
+                        <input 
+                            type="date" 
+                            id="dob" 
+                            name="dob" 
+                            required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary input-focus-effect"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">Gender *</label>
+                        <select 
+                            id="gender" 
+                            name="gender" 
+                            required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary input-focus-effect"
+                        >
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="space-y-6 form-section">
+                <h2 class="text-xl font-semibold border-b pb-2">Contact Information</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary input-focus-effect"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                        <input 
+                            type="tel" 
+                            id="phone" 
+                            name="phone" 
+                            required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary input-focus-effect"
+                        >
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Address *</label>
+                        <textarea 
+                            id="address" 
+                            name="address" 
+                            rows="3" 
+                            required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary input-focus-effect"
+                        ></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Academic Information -->
+            <div class="space-y-6 form-section">
+                <h2 class="text-xl font-semibold border-b pb-2">Academic Information</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="program" class="block text-sm font-medium text-gray-700 mb-1">Desired Program *</label>
+                        <select 
+                            id="program" 
+                            name="program" 
+                            required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary input-focus-effect"
+                        >
+                            <option value="">Select Program</option>
+                            <option value="btech">B.Tech</option>
+                            <option value="mtech">M.Tech</option>
+                            <option value="bba">BBA</option>
+                            <option value="mba">MBA</option>
+                            <option value="bca">BCA</option>
+                            <option value="mca">MCA</option>
+                            <option value="bpharm">B.Pharm</option>
+                            <option value="mpharm">M.Pharm</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="specialization" class="block text-sm font-medium text-gray-700 mb-1">Specialization *</label>
+                        <select 
+                            id="specialization" 
+                            name="specialization" 
+                            required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary input-focus-effect"
+                        >
+                            <option value="">Select Specialization</option>
+                            <option value="ai-ml">Artificial Intelligence & Machine Learning and Robotics</option>
+                            <option value="fullstack">Full Stack Developer & DevOps</option>
+                            <option value="data-science">Data Scientist</option>
+                            <option value="cloud">Cloud Engineer</option>
+                            <option value="blockchain">Blockchain Developer</option>
+                            <!-- More options would be here -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-lg font-medium">Previous Education</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="tenth-percentage" class="block text-sm font-medium text-gray-700 mb-1">10th Percentage *</label>
+                            <input 
+                                type="number" 
+                                id="tenth_percentage" 
+                                name="tenth_percentage" 
+                                min="0" 
+                                max="100" 
+                                step="0.01" 
+                                required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary input-focus-effect"
+                            >
+                        </div>
+                        
+                        <div>
+                            <label for="twelfth-percentage" class="block text-sm font-medium text-gray-700 mb-1">12th Percentage *</label>
+                            <input 
+                                type="number" 
+                                id="twelfth_percentage" 
+                                name="twelfth_percentage" 
+                                min="0" 
+                                max="100" 
+                                step="0.01" 
+                                required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary input-focus-effect"
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document Upload -->
+            <div class="space-y-6 form-section">
+                <h2 class="text-xl font-semibold border-b pb-2">Document Upload</h2>
+                
+                <div class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Photo Upload -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Passport Size Photo *</label>
+                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md relative file-drop-zone">
+                                <div class="space-y-1 text-center">
+                                    <div class="flex text-sm text-gray-600">
+                                        <label for="photo_upload" class="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primary-700 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary">
+                                            <span>Upload a file</span>
+                                            <input id="photo_upload" name="photo" type="file" class="sr-only" accept="image/*" required>
+                                        </label>
+                                        <p class="pl-1">or drag and drop</p>
+                                    </div>
+                                    <p class="text-xs text-gray-500">PNG, JPG up to 1MB</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Signature Upload -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Signature *</label>
+                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md relative file-drop-zone">
+                                <div class="space-y-1 text-center">
+                                    <div class="flex text-sm text-gray-600">
+                                        <label for="signature_upload" class="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primary-700 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary">
+                                            <span>Upload a file</span>
+                                            <input id="signature_upload" name="signature" type="file" class="sr-only" accept="image/*" required>
+                                        </label>
+                                        <p class="pl-1">or drag and drop</p>
+                                    </div>
+                                    <p class="text-xs text-gray-500">PNG, JPG up to 1MB</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+
+                    <!-- Documents Upload -->
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- 10th Marksheet -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">10th Marksheet *</label>
+                                <div class="mt-1 flex flex-col items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md relative file-drop-zone">
+                                    <input id="tenth-marksheet" name="tenth_marksheet" type="file" class="sr-only file-input" accept=".pdf,.jpg,.jpeg,.png" required>
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-600">
+                                            <label for="tenth-marksheet" class="cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primary-700 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary">
+                                                Upload a file
+                                            </label> or drag and drop
+                                        </p>
+                                        <p class="text-xs text-gray-500">PDF, PNG, JPG up to 2MB</p>
+                                        <div id="tenth-preview" class="mt-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- 12th Marksheet -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">12th Marksheet *</label>
+                                <div class="mt-1 flex flex-col items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md relative file-drop-zone">
+                                    <input id="twelfth-marksheet" name="twelfth_marksheet" type="file" class="sr-only file-input" accept=".pdf,.jpg,.jpeg,.png" required>
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-600">
+                                            <label for="twelfth-marksheet" class="cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primary-700 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary">
+                                                Upload a file
+                                            </label> or drag and drop
+                                        </p>
+                                        <p class="text-xs text-gray-500">PDF, PNG, JPG up to 2MB</p>
+                                        <div id="twelfth-preview" class="mt-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <script>
+                    document.querySelectorAll('.file-input').forEach(input => {
+                        input.addEventListener('change', function(event) {
+                            const file = event.target.files[0];
+                            const previewContainer = document.getElementById(`${event.target.id}-preview`);
+                            previewContainer.innerHTML = ''; // Clear previous content
+                    
+                            if (file) {
+                                if (file.type.startsWith('image/')) {
+                                    const img = document.createElement('img');
+                                    img.src = URL.createObjectURL(file);
+                                    img.classList.add('h-20', 'w-auto', 'mt-2', 'rounded');
+                                    previewContainer.appendChild(img);
+                                } else {
+                                    const p = document.createElement('p');
+                                    p.textContent = `File selected: ${file.name}`;
+                                    p.classList.add('text-sm', 'text-gray-500', 'mt-2');
+                                    previewContainer.appendChild(p);
+                                }
+                            }
+                        });
+                    });
+                    </script>
+                    
+                </div>
+            </div>
+
+            <!-- Declaration -->
+            <div class="space-y-4 form-section">
+                <h2 class="text-xl font-semibold border-b pb-2">Declaration</h2>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            <input 
+                                id="declaration" 
+                                name="declaration" 
+                                type="checkbox" 
+                                required
+                                class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                            >
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="declaration" class="font-medium text-gray-700">Declaration *</label>
+                            <p class="text-gray-500">I hereby declare that all the information provided by me in this application is true and correct to the best of my knowledge and belief.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="pt-6 flex justify-center form-section">
+                <button 
+                    type="submit" 
+                    class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary submit-btn"
+                >
+                    <span>Submit Application</span>
+                    <svg class="ml-2 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Social Share -->
+            <div class="border-t pt-6 form-section"> 
+                <div class="flex flex-col items-center space-y-4">
+                    <p class="text-sm text-gray-600">Share this application form with others:</p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://dit-university.edu/admission" target="_blank" class="text-gray-400 hover:text-primary transition-colors social-icon">
+                            <span class="sr-only">Share on Facebook</span>
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?url=https://dit-university.edu/admission" target="_blank" class="text-gray-400 hover:text-primary transition-colors social-icon">
+                            <span class="sr-only">Share on Twitter</span>
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                            </svg>
+                        </a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://dit-university.edu/admission" target="_blank" class="text-gray-400 hover:text-primary transition-colors social-icon">
+                            <span class="sr-only">Share on LinkedIn</span>
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        <a href="https://api.whatsapp.com/send?text=https://dit-university.edu/admission" target="_blank" class="text-gray-400 hover:text-primary transition-colors social-icon">
+                            <span class="sr-only">Share on WhatsApp</span>
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M20.11 3.89C17.95 1.72 14.99 0.5 11.87 0.5C5.83 0.5 0.87 5.46 0.87 11.5C0.87 13.49 1.37 15.43 2.32 17.14L0.75 23.5L7.27 21.96C8.91 22.82 10.77 23.27 12.67 23.27H12.68C18.72 23.27 23.68 18.31 23.68 12.27C23.68 9.15 22.27 6.06 20.11 3.89ZM11.87 21.37C10.17 21.37 8.51 20.94 7.03 20.11L6.69 19.91L2.91 20.82L3.83 17.13L3.61 16.77C2.71 15.23 2.23 13.48 2.23 11.68C2.23 6.47 6.47 2.23 11.68 2.23C14.29 2.23 16.75 3.25 18.57 5.07C20.39 6.89 21.41 9.35 21.41 11.96C21.41 17.17 17.17 21.41 11.96 21.41H11.87V21.37Z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <img src="https://via.placeholder.com/40" alt="DIT University Logo" class="mr-2">
+                        <span class="text-xl font-bold">DIT University</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Empowering students with knowledge, skills, and values to excel in a rapidly changing world.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <span class="sr-only">Facebook</span>
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <span class="sr-only">Instagram</span>
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <span class="sr-only">Twitter</span>
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <span class="sr-only">YouTube</span>
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 0 1-1.768 1.768c-1.56.419-7.814.419-7.814.419s-6.255 0-7.814-.419a2.505 2.505 0 0 1-1.768-1.768C2 15.255 2 12 2 12s0-3.255.417-4.814a2.507 2.507 0 0 1 1.768-1.768C5.744 5 11.998 5 11.998 5s6.255 0 7.814.418ZM15.194 12 10 15V9l5.194 3Z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Programs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Admissions</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Campus Life</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Research</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Placements</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Resources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Academic Calendar</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Library</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Scholarships</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Student Portal</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Career Services</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Alumni Network</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span>Mussoorie Diversion Road, Dehradun, Uttarakhand - 248009</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            <span>+91-XXXXXXXXXX</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3b52555c564848565452487b5b52">[email&#160;protected]</a></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">© 2024 DIT University. All rights reserved.</p>
+                <div class="mt-4 md:mt-0 flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    {% if messages %}
+    <div id="popupMessage" class="popup">
+        {% for message in messages %}
+            <p class="{% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <script>
+        setTimeout(function () {
+        var popup = document.getElementById("popupMessage");
+        if (popup) {
+            popup.style.display = "none";
+        }
+    }, 4000);
+    </script>
+
+</body>
+</html>
+
+
+
+
+                            
+        
+
+
+
+    
+
+    
