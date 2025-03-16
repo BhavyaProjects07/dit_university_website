@@ -1,14 +1,7 @@
-# Python
-*.pyc
-__pycache__/
-*.pyo
-*.pyd
-.Python
-db.sqlite3
 
 # Virtual Environment
 venv/
 .env/
 
 # VSCode
-.vscode/
+
