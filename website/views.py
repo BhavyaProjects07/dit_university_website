@@ -167,7 +167,7 @@ def admission_form(request):
 from django.shortcuts import redirect
 
 def auth_view(request):
-    next_url = request.GET.get('next', '/dashboard/')  # Default redirect to dashboard
+    next_url = request.GET.get('next', '/')  # Default redirect to dashboard
     
     if request.method == "POST":
         action = request.POST.get("action")
