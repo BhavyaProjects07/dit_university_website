@@ -221,7 +221,7 @@ def auth_view(request):
             user = User.objects.create_user(username=username, email=email, password=password)
             login(request, user)
             
-            return redirect(request.session.get('next_url', '/dashboard/'))  # Redirect to intended URL
+            return redirect(request.session.get('next_url', '/'))  # Redirect to intended URL
         
         # ✅ LOGIN HANDLING - Authenticate user
         elif action == "signin":
