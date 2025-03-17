@@ -83,10 +83,15 @@ WSGI_APPLICATION = 'dit_university_website.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dituniversity_db',
+        'USER': 'adminbhavya07',
+        'PASSWORD': 'H9LDVr8qsaXc1ltx1t2AHcPxYavdYerp',
+        'HOST': 'dpg-cvc1cglsvqrc73ajbc4g-a.oregon-postgres.render.com',  # External Database URL
+        'PORT': '5432',
     }
 }
+
 
 
 # Password validation
