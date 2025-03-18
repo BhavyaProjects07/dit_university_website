@@ -32,7 +32,7 @@ urlpatterns = [
      name='details'),
 
     path('chatbot/', views.chatbot, name='chatbot'),
-
+    path('profile/upload_picture/', views.upload_profile_picture, name='upload_profile_picture'),
 
 
 ]

@@ -142,22 +142,20 @@
                     <a href="/" class="text-black hover:text-primary transition-colors py-2" onclick="handleMobileNavClick('mobile_nav_home')">
                         Home
                     </a>
-                    <a href="/about" class="text-black hover:text-primary transition-colors py-2" onclick="handleMobileNavClick('mobile_nav_about')">
-                        About
+                    <a href="/PROGRAMS" class="text-black hover:text-primary transition-colors py-2" onclick="handleMobileNavClick('mobile_nav_about')">
+                        Programs
                     </a>
-                    <a href="/academics" class="text-primary font-medium py-2" onclick="handleMobileNavClick('mobile_nav_academics')">
+                    <a href="/ACADEMICS" class="text-primary font-medium py-2" onclick="handleMobileNavClick('mobile_nav_academics')">
                         Academics
                     </a>
-                    <a href="/admissions" class="text-black hover:text-primary transition-colors py-2" onclick="handleMobileNavClick('mobile_nav_admissions')">
+                    <a href="/ADMISSIONS" class="text-black hover:text-primary transition-colors py-2" onclick="handleMobileNavClick('mobile_nav_admissions')">
                         Admissions
                     </a>
-                    <a href="/research" class="text-black hover:text-primary transition-colors py-2" onclick="handleMobileNavClick('mobile_nav_research')">
-                        Research
-                    </a>
-                    <a href="/campus-life" class="text-black hover:text-primary transition-colors py-2" onclick="handleMobileNavClick('mobile_nav_campus_life')">
+                    
+                    <a href="/CAMPUS LIFE" class="text-black hover:text-primary transition-colors py-2" onclick="handleMobileNavClick('mobile_nav_campus_life')">
                         Campus Life
                     </a>
-                    <a href="/contact" class="text-black hover:text-primary transition-colors py-2" onclick="handleMobileNavClick('mobile_nav_contact')">
+                    <a href="/CONTACT" class="text-black hover:text-primary transition-colors py-2" onclick="handleMobileNavClick('mobile_nav_contact')">
                         Contact
                     </a>
 
@@ -1132,16 +1130,7 @@
                                 `).join('')}
                             </div>
                         </div>
-                        <a 
-                            href="/academics/programs/${program.id}"
-                            class="text-primary hover:text-primary-600 font-medium text-sm flex items-center"
-                            onclick="event.stopPropagation(); trackUserAction('program_details_${program.id}')"
-                        >
-                            Program Details
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 h-4 w-4">
-                                <path d="m9 18 6-6-6-6"></path>
-                            </svg>
-                        </a>
+                        
                     </div>
                 </div>
             `).join('');
@@ -1155,7 +1144,7 @@
                     position: "Professor & Dean of Engineering",
                     department: "Computer Science",
                     education: "Ph.D in Computer Science, IIT Delhi",
-                    image: "https://via.placeholder.com/150",
+                    image: "/static/pro1.webp",
                     research: ["Artificial Intelligence", "Machine Learning", "Data Science"]
                 },
                 {
@@ -1164,7 +1153,7 @@
                     position: "Associate Professor",
                     department: "Electronics Engineering",
                     education: "Ph.D in Electronics, MIT",
-                    image: "https://via.placeholder.com/150",
+                    image: "/static/pro2.webp",
                     research: ["VLSI Design", "Embedded Systems", "IoT"]
                 },
                 {
@@ -1173,7 +1162,7 @@
                     position: "Professor & Head",
                     department: "Mechanical Engineering",
                     education: "Ph.D in Mechanical Engineering, Stanford University",
-                    image: "https://via.placeholder.com/150",
+                    image: "/static/pro3.webp",
                     research: ["Thermodynamics", "Fluid Mechanics", "Robotics"]
                 },
                 {
@@ -1182,7 +1171,7 @@
                     position: "Assistant Professor",
                     department: "Management Studies",
                     education: "Ph.D in Management, IIM Ahmedabad",
-                    image: "https://via.placeholder.com/150",
+                    image: "/static/pro4.webp",
                     research: ["Finance", "Marketing Analytics", "Organizational Behavior"]
                 }
             ];

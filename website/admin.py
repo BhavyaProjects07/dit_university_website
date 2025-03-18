@@ -1,5 +1,5 @@
 from django.contrib import admin
-from website.models import AdmissionForm,AdmissionInquiry,ContactMessage,Department,Program,Classroom,Subject,Attendance
+from website.models import AdmissionForm,AdmissionInquiry,ContactMessage,Department,Program,Classroom,Subject,Attendance,Profile
 # admin -- admin-bhavya
 # pass -- ronaldo
 # Register your models here.
@@ -11,6 +11,7 @@ admin.site.register(Program)
 admin.site.register(Classroom)
 admin.site.register(Subject)
 admin.site.register(Attendance)
+admin.site.register(Profile)
 # admin.site.register(Programs_Details)
 
 

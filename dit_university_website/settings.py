@@ -163,3 +163,7 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 
 #ghcm oafn ilde vfna
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
