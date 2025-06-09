@@ -227,6 +227,7 @@ def auth_view(request):
         elif action == "signin":
             email = request.POST.get("email")
             password = request.POST.get("password")
+            print(f"User password is : {password}")
 
             try:
                 user = User.objects.get(email=email)
