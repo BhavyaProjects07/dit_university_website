@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-r46z)wl)t(z)i9&_ly1@4+g6e8ufo3+a5@i4+6#v*ee&6!7rni
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://ditunibhavya.onrender.com','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['ditunibhavya.onrender.com','localhost','127.0.0.1']
 
 
 # Application definition
@@ -76,21 +76,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dit_university_website.wsgi.application'
 
+import dj_database_url
 
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dituniversity_db',
-        'USER': 'adminbhavya07',
-        'PASSWORD': 'CYwgohAoIOJKySMSG0VAHMbKAzlKHaaO',
-        'HOST': 'postgresql://adminbhavya07:CYwgohAoIOJKySMSG0VAHMbKAzlKHaaO@dpg-d13fh6be5dus73en5ff0-a.oregon-postgres.render.com/dit_db_postgre',  # External Database URL
-        'PORT': '5432',
-    }
+    'default': dj_database_url.parse(
+        "postgres://adminbhavya07:CYwgohAoIOJKySMSG0VAHMbKAzlKHaaO@dpg-d13fh6be5dus73en5ff0-a.oregon-postgres.render.com:5432/dit_db_postgre",
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
+
 
 
 
@@ -128,7 +127,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -167,3 +166,11 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
