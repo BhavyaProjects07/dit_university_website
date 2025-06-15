@@ -262,22 +262,18 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def dashboard(request):
-    if request.user.is_authenticated:
-        subjects = Subject.objects.filter(student=request.user)
+    subjects = Subject.objects.filter(student=request.user)
 
-        for subject in subjects:
-            subject.attendance = Attendance.calculate_attendance_percentage(request.user, subject)
+    for subject in subjects:
+        subject.attendance = Attendance.calculate_attendance_percentage(request.user, subject)
 
-        # Include profile data in the context
-        profile = Profile.objects.get(user=request.user)  # Assuming a one-to-one relationship
-        
-        return render(request, 'sub_templates/dash.html', {
-            'subjects': subjects,
-            'profile': profile  # Add profile here
-        })
-    else:
-        return redirect('/Log in')
-    
+    # Ensure Profile always exists
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
+    return render(request, 'sub_templates/dash.html', {
+        'subjects': subjects,
+        'profile': profile
+    })
     
 @login_required
 def upload_profile_picture(request):
